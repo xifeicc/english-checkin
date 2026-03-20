@@ -113,6 +113,138 @@
             color: rgba(255,255,255,0.8);
         }
 
+        /* 看图识词模式 */
+        .picture-game {
+            text-align: center;
+        }
+
+        .picture-card {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 20px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .word-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .word-option-btn {
+            padding: 20px 15px;
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .word-option-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .word-option-btn.correct {
+            border-color: #52c41a;
+            background: #f6ffed;
+            animation: bounce 0.5s;
+        }
+
+        .word-option-btn.wrong {
+            border-color: #ff4d4f;
+            background: #fff1f0;
+            animation: shake 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* 连线配对模式 */
+        .matching-game {
+            padding: 10px;
+        }
+
+        .matching-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .matching-card {
+            padding: 20px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .matching-card:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .matching-card.selected {
+            border-color: #667eea;
+            background: #e8f0ff;
+            transform: scale(1.05);
+        }
+
+        .matching-card.matched {
+            border-color: #52c41a;
+            background: #f6ffed;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .matching-card .emoji {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .matching-info {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 12px;
+        }
+
+        .matching-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .matching-instruction {
+            color: #666;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
         .practice-area {
             background: white;
             border-radius: 20px;
@@ -300,26 +432,52 @@
             margin: 20px 0;
         }
 
-        /* 情景交流 */
-        .dialogue-area {
-            background: #f8f9ff;
+        /* 情景交流 - 聊天界面 */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            background: #f5f5f5;
             border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            overflow: hidden;
         }
 
-        .dialogue-bubble {
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .chat-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chat-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .chat-message {
             display: flex;
             align-items: flex-start;
             margin-bottom: 15px;
             gap: 10px;
         }
 
-        .dialogue-bubble.user {
+        .chat-message.user {
             flex-direction: row-reverse;
         }
 
-        .avatar {
+        .chat-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -332,59 +490,146 @@
             flex-shrink: 0;
         }
 
-        .dialogue-bubble.user .avatar {
+        .chat-message.user .chat-avatar {
             background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
         }
 
-        .bubble-content {
-            background: white;
-            padding: 12px 18px;
-            border-radius: 18px;
+        .chat-bubble {
             max-width: 70%;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 18px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .dialogue-bubble.user .bubble-content {
+        .chat-message.user .chat-bubble {
             background: #667eea;
             color: white;
         }
 
-        .bubble-text {
-            font-size: 16px;
+        .chat-text {
+            font-size: 15px;
             line-height: 1.5;
         }
 
-        .bubble-translation {
+        .chat-translation {
             font-size: 12px;
-            color: #888;
+            color: #999;
             margin-top: 5px;
         }
 
-        .dialogue-bubble.user .bubble-translation {
+        .chat-message.user .chat-translation {
             color: rgba(255,255,255,0.7);
         }
 
-        .response-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+        .chat-input-area {
+            background: white;
+            padding: 15px;
+            border-top: 1px solid #e0e0e0;
         }
 
-        .response-btn {
-            padding: 15px 20px;
+        .chat-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chat-option-btn {
+            padding: 12px 16px;
+            background: #f8f9ff;
             border: 2px solid #e0e0e0;
             border-radius: 12px;
-            background: white;
             text-align: left;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .response-btn:hover {
+        .chat-option-btn:hover {
             border-color: #667eea;
-            background: #f8f9ff;
+            background: #e8f0ff;
+        }
+
+        .chat-option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .chat-option-text {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .chat-option-cn {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 18px;
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .chat-hint {
+            text-align: center;
+            padding: 10px;
+            color: #999;
+            font-size: 12px;
+            background: #fff9e6;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .chat-score {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+            margin: 20px 0;
+        }
+
+        .chat-score-value {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .chat-score-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
         }
 
         /* 结果展示 */
@@ -550,6 +795,256 @@
             font-size: 10px;
             margin-top: 2px;
         }
+
+        /* 打卡记录详情 */
+        .checkin-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkin-detail-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-close {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+        }
+
+        .detail-date {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .detail-date .date-text {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .detail-date .score-text {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .practice-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .practice-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .practice-info {
+            flex: 1;
+        }
+
+        .practice-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .practice-detail {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .practice-score {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        /* 单元选择器 */
+        .unit-selector {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .unit-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .unit-tabs {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .unit-tab {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .unit-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .unit-progress {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .progress-bar-small {
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-small .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        /* 今日推荐 */
+        .today-recommendation {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 20px;
+            color: white;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .rec-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .rec-icon {
+            font-size: 32px;
+        }
+
+        .rec-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .rec-content {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .rec-unit {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .rec-words {
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .rec-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-white {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -576,16 +1071,57 @@
     <div class="main-content">
         <!-- 首页 -->
         <div id="homePage" class="page">
-            <div class="mode-selector">
-                <div class="mode-card" onclick="startMode('dictation')">
-                    <div class="mode-icon">✍️</div>
-                    <div class="mode-title">听写打字</div>
-                    <div class="mode-desc">听读音写单词</div>
+            <!-- 今日推荐 -->
+            <div class="today-recommendation" id="todayRecommendation">
+                <div class="rec-header">
+                    <div class="rec-icon">📚</div>
+                    <div class="rec-title">今日学习推荐</div>
                 </div>
-                <div class="mode-card" onclick="startMode('choice')">
-                    <div class="mode-icon">🎯</div>
-                    <div class="mode-title">听音选词</div>
-                    <div class="mode-desc">选择正确单词</div>
+                <div class="rec-content">
+                    <div class="rec-unit" id="recUnit">Unit 1 - Welcome back to school</div>
+                    <div class="rec-words" id="recWords">
+                        推荐单词：UK, Canada, USA, China, she, student<br>
+                        对话练习：介绍新朋友
+                    </div>
+                </div>
+                <div class="rec-actions">
+                    <button class="btn btn-white" onclick="startDailyPractice()">开始练习</button>
+                    <button class="btn btn-outline" onclick="switchUnit()">切换单元</button>
+                </div>
+            </div>
+
+            <!-- 单元选择器 -->
+            <div class="unit-selector">
+                <div class="unit-title">📖 选择单元</div>
+                <div class="unit-tabs" id="unitTabs">
+                    <div class="unit-tab active" onclick="selectUnit(1)">Unit 1</div>
+                    <div class="unit-tab" onclick="selectUnit(2)">Unit 2</div>
+                    <div class="unit-tab" onclick="selectUnit(3)">Unit 3</div>
+                    <div class="unit-tab" onclick="selectUnit(4)">Unit 4</div>
+                    <div class="unit-tab" onclick="selectUnit(5)">Unit 5</div>
+                    <div class="unit-tab" onclick="selectUnit(6)">Unit 6</div>
+                </div>
+                <div class="unit-progress" id="unitProgress">
+                    <div class="progress-info">
+                        <span>本单元进度</span>
+                        <span id="unitProgressText">0/15 单词</span>
+                    </div>
+                    <div class="progress-bar-small">
+                        <div class="fill" id="unitProgressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mode-selector">
+                <div class="mode-card" onclick="startMode('picture')">
+                    <div class="mode-icon">🖼️</div>
+                    <div class="mode-title">看图识词</div>
+                    <div class="mode-desc">看图片选单词</div>
+                </div>
+                <div class="mode-card" onclick="startMode('matching')">
+                    <div class="mode-icon">🔗</div>
+                    <div class="mode-title">连线配对</div>
+                    <div class="mode-desc">英汉连连看</div>
                 </div>
                 <div class="mode-card" onclick="startMode('repeat')">
                     <div class="mode-icon">🎤</div>
@@ -602,6 +1138,9 @@
             <div class="practice-area">
                 <h3 style="margin-bottom: 15px; color: #333;">📅 本月打卡</h3>
                 <div class="checkin-calendar" id="calendar"></div>
+                <div style="text-align: center; margin-top: 15px; color: #888; font-size: 13px;">
+                    💡 点击有 ✓ 的日期查看详情
+                </div>
             </div>
         </div>
 
@@ -612,40 +1151,35 @@
                     <div class="progress-fill" id="progressBar" style="width: 0%"></div>
                 </div>
 
-                <!-- 听写模式 -->
-                <div id="dictationMode" class="mode-content hidden">
-                    <div class="word-display">
-                        <div class="word-image" id="dictationImage">🎧</div>
-                        <div class="word-meaning" id="dictationMeaning">点击播放按钮听单词</div>
+                <!-- 看图识词模式 -->
+                <div id="pictureMode" class="mode-content hidden">
+                    <div class="picture-game">
+                        <div class="word-display">
+                            <div class="picture-card" id="pictureCard">🎧</div>
+                            <div class="word-meaning" id="pictureHint">这是什么？选择正确的单词</div>
+                        </div>
+                        <div class="control-buttons">
+                            <button class="btn btn-primary" onclick="playPictureWord()">
+                                🔊 听读音
+                            </button>
+                        </div>
+                        <div class="word-options" id="pictureOptions">
+                            <!-- 选项动态生成 -->
+                        </div>
                     </div>
-                    <div class="control-buttons">
-                        <button class="btn btn-primary" onclick="playCurrentWord()">
-                            🔊 播放
-                        </button>
-                        <button class="btn btn-secondary" onclick="playSlow()">
-                            🐢 慢速
-                        </button>
-                    </div>
-                    <input type="text" class="dictation-input" id="dictationInput" 
-                           placeholder="请输入听到的单词" autocomplete="off">
-                    <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" 
-                            onclick="checkDictation()">
-                        提交答案
-                    </button>
                 </div>
 
-                <!-- 选择题模式 -->
-                <div id="choiceMode" class="mode-content hidden">
-                    <div class="word-display">
-                        <div class="word-image" id="choiceImage">🎧</div>
-                        <div class="word-meaning" id="choiceHint">听读音，选择正确的单词</div>
+                <!-- 连线配对模式 -->
+                <div id="matchingMode" class="mode-content hidden">
+                    <div class="matching-game">
+                        <div class="matching-info">
+                            <div class="matching-score" id="matchingScore">0/6 配对成功</div>
+                            <div class="matching-instruction">💡 点击英文和对应的中文进行配对</div>
+                        </div>
+                        <div class="matching-grid" id="matchingGrid">
+                            <!-- 配对卡片动态生成 -->
+                        </div>
                     </div>
-                    <div class="control-buttons">
-                        <button class="btn btn-primary" onclick="playCurrentWord()">
-                            🔊 播放
-                        </button>
-                    </div>
-                    <div class="options-grid" id="choiceOptions"></div>
                 </div>
 
                 <!-- 跟读模式 -->
@@ -670,13 +1204,24 @@
                     <div class="similarity-score hidden" id="similarityScore">0%</div>
                 </div>
 
-                <!-- 情景交流模式 -->
+                <!-- 情景交流模式 - 聊天界面 -->
                 <div id="dialogueMode" class="mode-content hidden">
-                    <div class="dialogue-area" id="dialogueArea">
-                        <!-- 对话内容动态生成 -->
-                    </div>
-                    <div class="response-options" id="responseOptions">
-                        <!-- 选项动态生成 -->
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            <div class="chat-title" id="chatTitle">情景对话</div>
+                            <div class="chat-subtitle" id="chatSubtitle">和 AI 朋友聊天吧!</div>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- 聊天记录动态生成 -->
+                        </div>
+                        <div class="chat-input-area">
+                            <div class="chat-hint" id="chatHint">
+                                💡 选择下面的回复，和 AI 练习英语对话
+                            </div>
+                            <div class="chat-options" id="chatOptions">
+                                <!-- 选项动态生成 -->
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -686,10 +1231,10 @@
                         <div class="result-icon" id="resultIcon">🎉</div>
                         <div class="result-title" id="resultTitle">练习完成!</div>
                         <div class="stars" id="resultStars">⭐⭐⭐</div>
-                        <div class="result-score" id="resultScore">100分</div>
+                        <div class="result-score" id="resultScore">100 分</div>
                         <div class="result-detail" id="resultDetail">
                             答对 10/10 题<br>
-                            用时 3分25秒
+                            用时 3 分 25 秒
                         </div>
                         <button class="btn btn-primary" style="margin-top: 30px;" 
                                 onclick="backToHome()">
@@ -728,6 +1273,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- 打卡详情弹窗 -->
+        <div id="checkinDetailModal" class="checkin-detail-modal hidden">
+            <div class="checkin-detail-content">
+                <div class="modal-header">
+                    <div class="modal-title">打卡详情</div>
+                    <button class="modal-close" onclick="closeCheckinDetail()">×</button>
+                </div>
+                <div class="detail-date" id="detailDate">
+                    <div class="date-text">3 月 20 日</div>
+                    <div class="score-text">100 分</div>
+                </div>
+                <div id="practiceList">
+                    <!-- 练习项目列表动态生成 -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 底部导航 -->
@@ -749,163 +1311,363 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // 人教版三年级下册单词数据
-        const wordData = [
-            // Unit 1 Welcome back to school
-            { en: 'UK', cn: '英国', phonetic: '/ˌjuː ˈkeɪ/', unit: 1 },
-            { en: 'Canada', cn: '加拿大', phonetic: '/ˈkænədə/', unit: 1 },
-            { en: 'USA', cn: '美国', phonetic: '/ˌjuː es ˈeɪ/', unit: 1 },
-            { en: 'China', cn: '中国', phonetic: '/ˈtʃaɪnə/', unit: 1 },
-            { en: 'she', cn: '她', phonetic: '/ʃiː/', unit: 1 },
-            { en: 'student', cn: '学生', phonetic: '/ˈstjuːdnt/', unit: 1 },
-            { en: 'pupil', cn: '学生；(尤指)小学生', phonetic: '/ˈpjuːpl/', unit: 1 },
-            { en: 'he', cn: '他', phonetic: '/hiː/', unit: 1 },
-            { en: 'teacher', cn: '教师', phonetic: '/ˈtiːtʃə(r)/', unit: 1 },
-            { en: 'boy', cn: '男孩', phonetic: '/bɔɪ/', unit: 1 },
-            { en: 'and', cn: '和；与', phonetic: '/ænd/', unit: 1 },
-            { en: 'girl', cn: '女孩', phonetic: '/ɡɜːl/', unit: 1 },
-            { en: 'new', cn: '新的', phonetic: '/njuː/', unit: 1 },
-            { en: 'friend', cn: '朋友', phonetic: '/frend/', unit: 1 },
-            { en: 'today', cn: '今天', phonetic: '/təˈdeɪ/', unit: 1 },
-            
-            // Unit 2 My family
-            { en: 'father', cn: '父亲；爸爸', phonetic: '/ˈfɑːðə(r)/', unit: 2 },
-            { en: 'dad', cn: '(口语)爸爸；爹爹', phonetic: '/dæd/', unit: 2 },
-            { en: 'mother', cn: '母亲；妈妈', phonetic: '/ˈmʌðə(r)/', unit: 2 },
-            { en: 'sister', cn: '姐；妹', phonetic: '/ˈsɪstə(r)/', unit: 2 },
-            { en: 'brother', cn: '兄；弟', phonetic: '/ˈbrʌðə(r)/', unit: 2 },
-            { en: 'grandmother', cn: '(外)祖母', phonetic: '/ˈɡrænmʌðə(r)/', unit: 2 },
-            { en: 'grandma', cn: '(口语)(外)祖母', phonetic: '/ˈɡrænmɑː/', unit: 2 },
-            { en: 'grandfather', cn: '(外)祖父', phonetic: '/ˈɡrænfɑːðə(r)/', unit: 2 },
-            { en: 'grandpa', cn: '(口语)(外)祖父', phonetic: '/ˈɡrænpɑː/', unit: 2 },
-            { en: 'family', cn: '家；家庭', phonetic: '/ˈfæməli/', unit: 2 },
-            { en: 'man', cn: '男人', phonetic: '/mæn/', unit: 2 },
-            { en: 'woman', cn: '女人', phonetic: '/ˈwʊmən/', unit: 2 },
+        // 按单元组织的单词数据（人教版三年级下册）
+        const wordDataByUnit = {
+            1: [
+                { en: 'UK', cn: '英国', phonetic: '/ˌjuː ˈkeɪ/' },
+                { en: 'Canada', cn: '加拿大', phonetic: '/ˈkænədə/' },
+                { en: 'USA', cn: '美国', phonetic: '/ˌjuː es ˈeɪ/' },
+                { en: 'China', cn: '中国', phonetic: '/ˈtʃaɪnə/' },
+                { en: 'she', cn: '她', phonetic: '/ʃiː/' },
+                { en: 'student', cn: '学生', phonetic: '/ˈstjuːdnt/' },
+                { en: 'pupil', cn: '学生；小学生', phonetic: '/ˈpjuːpl/' },
+                { en: 'he', cn: '他', phonetic: '/hiː/' },
+                { en: 'teacher', cn: '教师', phonetic: '/ˈtiːtʃə(r)/' },
+                { en: 'boy', cn: '男孩', phonetic: '/bɔɪ/' },
+                { en: 'and', cn: '和；与', phonetic: '/ænd/' },
+                { en: 'girl', cn: '女孩', phonetic: '/ɡɜːl/' },
+                { en: 'new', cn: '新的', phonetic: '/njuː/' },
+                { en: 'friend', cn: '朋友', phonetic: '/frend/' },
+                { en: 'today', cn: '今天', phonetic: '/təˈdeɪ/' }
+            ],
+            2: [
+                { en: 'father', cn: '父亲；爸爸', phonetic: '/ˈfɑːðə(r)/' },
+                { en: 'dad', cn: '爸爸', phonetic: '/dæd/' },
+                { en: 'mother', cn: '母亲；妈妈', phonetic: '/ˈmʌðə(r)/' },
+                { en: 'sister', cn: '姐；妹', phonetic: '/ˈsɪstə(r)/' },
+                { en: 'brother', cn: '兄；弟', phonetic: '/ˈbrʌðə(r)/' },
+                { en: 'grandmother', cn: '(外)祖母', phonetic: '/ˈɡrænmʌðə(r)/' },
+                { en: 'grandma', cn: '(外)祖母', phonetic: '/ˈɡrænmɑː/' },
+                { en: 'grandfather', cn: '(外)祖父', phonetic: '/ˈɡrænfɑːðə(r)/' },
+                { en: 'grandpa', cn: '(外)祖父', phonetic: '/ˈɡrænpɑː/' },
+                { en: 'family', cn: '家；家庭', phonetic: '/ˈfæməli/' },
+                { en: 'man', cn: '男人', phonetic: '/mæn/' },
+                { en: 'woman', cn: '女人', phonetic: '/ˈwʊmən/' }
+            ],
+            3: [
+                { en: 'thin', cn: '瘦的', phonetic: '/θɪn/' },
+                { en: 'fat', cn: '胖的；肥的', phonetic: '/fæt/' },
+                { en: 'tall', cn: '高的', phonetic: '/tɔːl/' },
+                { en: 'short', cn: '矮的；短的', phonetic: '/ʃɔːt/' },
+                { en: 'long', cn: '长的', phonetic: '/lɒŋ/' },
+                { en: 'small', cn: '小的', phonetic: '/smɔːl/' },
+                { en: 'big', cn: '大的', phonetic: '/bɪɡ/' },
+                { en: 'giraffe', cn: '长颈鹿', phonetic: '/dʒəˈrɑːf/' },
+                { en: 'so', cn: '这么；那么', phonetic: '/səʊ/' },
+                { en: 'children', cn: '儿童', phonetic: '/ˈtʃɪldrən/' },
+                { en: 'tail', cn: '尾巴', phonetic: '/teɪl/' }
+            ],
+            4: [
+                { en: 'on', cn: '在……上', phonetic: '/ɒn/' },
+                { en: 'in', cn: '在……里', phonetic: '/ɪn/' },
+                { en: 'under', cn: '在……下面', phonetic: '/ˈʌndə(r)/' },
+                { en: 'chair', cn: '椅子', phonetic: '/tʃeə(r)/' },
+                { en: 'desk', cn: '书桌', phonetic: '/desk/' },
+                { en: 'cap', cn: '帽子', phonetic: '/kæp/' },
+                { en: 'ball', cn: '球', phonetic: '/bɔːl/' },
+                { en: 'car', cn: '小汽车', phonetic: '/kɑː(r)/' },
+                { en: 'boat', cn: '小船', phonetic: '/bəʊt/' },
+                { en: 'map', cn: '地图', phonetic: '/mæp/' },
+                { en: 'toy', cn: '玩具', phonetic: '/tɔɪ/' },
+                { en: 'box', cn: '盒；箱', phonetic: '/bɒks/' }
+            ],
+            5: [
+                { en: 'pear', cn: '梨', phonetic: '/peə(r)/' },
+                { en: 'apple', cn: '苹果', phonetic: '/ˈæpl/' },
+                { en: 'orange', cn: '橙子', phonetic: '/ˈɒrɪndʒ/' },
+                { en: 'banana', cn: '香蕉', phonetic: '/bəˈnɑːnə/' },
+                { en: 'watermelon', cn: '西瓜', phonetic: '/ˈwɔːtəmelən/' },
+                { en: 'strawberry', cn: '草莓', phonetic: '/ˈstrɔːbəri/' },
+                { en: 'grape', cn: '葡萄', phonetic: '/ɡreɪp/' },
+                { en: 'buy', cn: '买', phonetic: '/baɪ/' },
+                { en: 'fruit', cn: '水果', phonetic: '/fruːt/' }
+            ],
+            6: [
+                { en: 'eleven', cn: '十一', phonetic: '/ɪˈlevn/' },
+                { en: 'twelve', cn: '十二', phonetic: '/twelv/' },
+                { en: 'thirteen', cn: '十三', phonetic: '/ˌθɜːˈtiːn/' },
+                { en: 'fourteen', cn: '十四', phonetic: '/ˌfɔːˈtiːn/' },
+                { en: 'fifteen', cn: '十五', phonetic: '/ˌfɪfˈtiːn/' },
+                { en: 'sixteen', cn: '十六', phonetic: '/ˌsɪksˈtiːn/' },
+                { en: 'seventeen', cn: '十七', phonetic: '/ˌsevnˈtiːn/' },
+                { en: 'eighteen', cn: '十八', phonetic: '/ˌeɪˈtiːn/' },
+                { en: 'nineteen', cn: '十九', phonetic: '/ˌnaɪnˈtiːn/' },
+                { en: 'twenty', cn: '二十', phonetic: '/ˈtwenti/' },
+                { en: 'kite', cn: '风筝', phonetic: '/kaɪt/' },
+                { en: 'beautiful', cn: '美丽的', phonetic: '/ˈbjuːtɪfl/' }
+            ]
+        };
 
-            // Unit 3 At the zoo
-            { en: 'thin', cn: '瘦的', phonetic: '/θɪn/', unit: 3 },
-            { en: 'fat', cn: '胖的；肥的', phonetic: '/fæt/', unit: 3 },
-            { en: 'tall', cn: '高的', phonetic: '/tɔːl/', unit: 3 },
-            { en: 'short', cn: '矮的；短的', phonetic: '/ʃɔːt/', unit: 3 },
-            { en: 'long', cn: '长的', phonetic: '/lɒŋ/', unit: 3 },
-            { en: 'small', cn: '小的', phonetic: '/smɔːl/', unit: 3 },
-            { en: 'big', cn: '大的', phonetic: '/bɪɡ/', unit: 3 },
-            { en: 'giraffe', cn: '长颈鹿', phonetic: '/dʒəˈrɑːf/', unit: 3 },
-            { en: 'so', cn: '这么；那么', phonetic: '/səʊ/', unit: 3 },
-            { en: 'children', cn: '儿童', phonetic: '/ˈtʃɪldrən/', unit: 3 },
-            { en: 'tail', cn: '尾巴', phonetic: '/teɪl/', unit: 3 },
+        // 合并所有单词数据（兼容旧代码）
+        const wordData = [];
+        for (let unit in wordDataByUnit) {
+            wordDataByUnit[unit].forEach(word => {
+                word.unit = parseInt(unit);
+                wordData.push(word);
+            });
+        }
 
-            // Unit 4 Where is my car?
-            { en: 'on', cn: '在……上', phonetic: '/ɒn/', unit: 4 },
-            { en: 'in', cn: '在……里', phonetic: '/ɪn/', unit: 4 },
-            { en: 'under', cn: '在……下面', phonetic: '/ˈʌndə(r)/', unit: 4 },
-            { en: 'chair', cn: '椅子', phonetic: '/tʃeə(r)/', unit: 4 },
-            { en: 'desk', cn: '书桌', phonetic: '/desk/', unit: 4 },
-            { en: 'cap', cn: '帽子', phonetic: '/kæp/', unit: 4 },
-            { en: 'ball', cn: '球', phonetic: '/bɔːl/', unit: 4 },
-            { en: 'car', cn: '小汽车', phonetic: '/kɑː(r)/', unit: 4 },
-            { en: 'boat', cn: '小船', phonetic: '/bəʊt/', unit: 4 },
-            { en: 'map', cn: '地图', phonetic: '/mæp/', unit: 4 },
-            { en: 'toy', cn: '玩具', phonetic: '/tɔɪ/', unit: 4 },
-            { en: 'box', cn: '盒；箱', phonetic: '/bɒks/', unit: 4 },
+        // 情景对话数据（按单元分类）- 扩展为多轮对话
+        const dialogueDataByUnit = {
+            1: [
+                {
+                    title: '介绍新朋友',
+                    scenario: '在学校遇到新同学',
+                    messages: [
+                        { speaker: 'ai', text: 'Hi! I\'m Amy. What\'s your name?', cn: '你好！我是艾米。你叫什么名字？' }
+                    ],
+                    responses: [
+                        { 
+                            text: 'Hi, I\'m Tom. Nice to meet you!', 
+                            cn: '你好，我是汤姆。很高兴见到你！',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Nice to meet you too! Where are you from?', cn: '我也很高兴见到你！你来自哪里？' },
+                                {
+                                    responses: [
+                                        { text: 'I\'m from China.', cn: '我来自中国。', correct: true, score: 10 },
+                                        { text: 'I\'m from UK.', cn: '我来自英国。', correct: true, score: 10 },
+                                        { text: 'I like apples.', cn: '我喜欢苹果。', correct: false, score: 5 }
+                                    ]
+                                }
+                            ]
+                        },
+                        { 
+                            text: 'Hello! My name is Sarah.', 
+                            cn: '你好！我叫莎拉。',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Great! Are you a new student?', cn: '太好了！你是新生吗？' },
+                                {
+                                    responses: [
+                                        { text: 'Yes, I am.', cn: '是的，我是。', correct: true, score: 10 },
+                                        { text: 'No, I\'m not.', cn: '不，我不是。', correct: true, score: 10 },
+                                        { text: 'Goodbye!', cn: '再见！', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        },
+                        { 
+                            text: 'Goodbye!', 
+                            cn: '再见！',
+                            correct: false,
+                            feedback: '太快说再见啦，先介绍一下自己吧！'
+                        }
+                    ]
+                }
+            ],
+            2: [
+                {
+                    title: '谈论家庭',
+                    scenario: '向朋友展示家庭照片',
+                    messages: [
+                        { speaker: 'ai', text: 'Who\'s that man in the photo?', cn: '照片里的那个男人是谁？' }
+                    ],
+                    responses: [
+                        { 
+                            text: 'He\'s my father.', 
+                            cn: '他是我爸爸。',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'And who\'s that woman?', cn: '那个女人是谁？' },
+                                {
+                                    responses: [
+                                        { text: 'She\'s my mother.', cn: '她是我妈妈。', correct: true, score: 10 },
+                                        { text: 'He\'s my brother.', cn: '他是我哥哥。', correct: false, score: 5 },
+                                        { text: 'It\'s a cat.', cn: '它是一只猫。', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        },
+                        { 
+                            text: 'That\'s my grandpa.', 
+                            cn: '那是我爷爷。',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Is that your grandma too?', cn: '那也是你的奶奶吗？' },
+                                {
+                                    responses: [
+                                        { text: 'Yes, she is.', cn: '是的，她是。', correct: true, score: 10 },
+                                        { text: 'No, that\'s my sister.', cn: '不，那是我姐姐。', correct: true, score: 10 },
+                                        { text: 'I don\'t know.', cn: '我不知道。', correct: true, score: 8 }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            3: [
+                {
+                    title: '在动物园',
+                    scenario: '和朋友一起参观动物园',
+                    messages: [
+                        { speaker: 'ai', text: 'Look at that giraffe! It\'s so tall!', cn: '看那只长颈鹿！它好高啊！' }
+                    ],
+                    responses: [
+                        { 
+                            text: 'Wow! Yes, it\'s very tall!', 
+                            cn: '哇！是的，它很高！',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Do you like giraffes?', cn: '你喜欢长颈鹿吗？' },
+                                {
+                                    responses: [
+                                        { text: 'Yes, I do. They\'re cute!', cn: '是的，我喜欢。它们很可爱！', correct: true, score: 10 },
+                                        { text: 'No, I don\'t. I like pandas.', cn: '不，我不喜欢。我喜欢熊猫。', correct: true, score: 10 },
+                                        { text: 'It\'s under the chair.', cn: '它在椅子下面。', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        },
+                        { 
+                            text: 'The elephant is bigger!', 
+                            cn: '大象更大！',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'You\'re right! Which animal do you like best?', cn: '你说得对！你最喜欢哪种动物？' },
+                                {
+                                    responses: [
+                                        { text: 'I like monkeys best.', cn: '我最喜欢猴子。', correct: true, score: 10 },
+                                        { text: 'Pandas are my favorite.', cn: '熊猫是我的最爱。', correct: true, score: 10 },
+                                        { text: 'I see fifteen.', cn: '我看见十五个。', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            4: [
+                {
+                    title: '寻找物品',
+                    scenario: '找不到玩具了，向妈妈求助',
+                    messages: [
+                        { speaker: 'ai', text: 'Mom, where is my toy car?', cn: '妈妈，我的小汽车在哪里？' }
+                    ],
+                    responses: [
+                        { 
+                            text: 'Is it in your toy box?', 
+                            cn: '它在你的玩具箱里吗？',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Let me check... No, it\'s not here.', cn: '让我看看... 不，它不在这里。' },
+                                {
+                                    responses: [
+                                        { text: 'Maybe it\'s under your bed.', cn: '也许它在你的床底下。', correct: true, score: 10 },
+                                        { text: 'It\'s on the desk.', cn: '它在书桌上。', correct: true, score: 10 },
+                                        { text: 'I like grapes.', cn: '我喜欢葡萄。', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        },
+                        { 
+                            text: 'Is it under the chair?', 
+                            cn: '它在椅子下面吗？',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Yes! You found it! Great job!', cn: '是的！你找到了！太棒了！' },
+                                {
+                                    responses: [
+                                        { text: 'Thank you, Mom!', cn: '谢谢你，妈妈！', correct: true, score: 10 },
+                                        { text: 'You\'re welcome!', cn: '不客气！', correct: true, score: 10 },
+                                        { text: 'Goodbye!', cn: '再见！', correct: false, score: 5 }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            5: [
+                {
+                    title: '询问喜好',
+                    scenario: '在超市买水果',
+                    messages: [
+                        { speaker: 'ai', text: 'Do you like pears?', cn: '你喜欢梨吗？' }
+                    ],
+                    responses: [
+                        { 
+                            text: 'Yes, I do. They\'re sweet!', 
+                            cn: '是的，我喜欢。它们很甜！',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'What about apples?', cn: '那苹果呢？' },
+                                {
+                                    responses: [
+                                        { text: 'I like apples too!', cn: '我也喜欢苹果！', correct: true, score: 10 },
+                                        { text: 'No, I don\'t like apples.', cn: '不，我不喜欢苹果。', correct: true, score: 10 },
+                                        { text: 'It\'s twenty yuan.', cn: '二十元。', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        },
+                        { 
+                            text: 'No, I don\'t. I like bananas.', 
+                            cn: '不，我不喜欢。我喜欢香蕉。',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Bananas are good too. Let\'s buy some!', cn: '香蕉也很好。我们买一些吧！' },
+                                {
+                                    responses: [
+                                        { text: 'OK! How many?', cn: '好的！买多少？', correct: true, score: 10 },
+                                        { text: 'Great idea!', cn: '好主意！', correct: true, score: 10 },
+                                        { text: 'She\'s my teacher.', cn: '她是我的老师。', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            6: [
+                {
+                    title: '数数游戏',
+                    scenario: '和朋友一起数风筝',
+                    messages: [
+                        { speaker: 'ai', text: 'How many kites can you see?', cn: '你能看见多少只风筝？' }
+                    ],
+                    responses: [
+                        { 
+                            text: 'I can see fifteen kites!', 
+                            cn: '我能看见十五只风筝！',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Wow! That\'s a lot!', cn: '哇！真多啊！' },
+                                {
+                                    responses: [
+                                        { text: 'Yes! They\'re beautiful!', cn: '是的！它们很漂亮！', correct: true, score: 10 },
+                                        { text: 'No, only five.', cn: '不，只有五只。', correct: true, score: 10 },
+                                        { text: 'It\'s so tall.', cn: '它好高啊。', correct: false, score: 3 }
+                                    ]
+                                }
+                            ]
+                        },
+                        { 
+                            text: 'Let me count... One, two, three...', 
+                            cn: '让我数数... 一，二，三...',
+                            correct: true,
+                            next: [
+                                { speaker: 'ai', text: 'Take your time!', cn: '慢慢数！' },
+                                {
+                                    responses: [
+                                        { text: 'Seventeen! I see seventeen!', cn: '十七！我看见十七只！', correct: true, score: 10 },
+                                        { text: 'Twenty! There are twenty!', cn: '二十！有二十只！', correct: true, score: 10 },
+                                        { text: 'I don\'t know.', cn: '我不知道。', correct: true, score: 8 }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
 
-            // Unit 5 Do you like pears?
-            { en: 'pear', cn: '梨', phonetic: '/peə(r)/', unit: 5 },
-            { en: 'apple', cn: '苹果', phonetic: '/ˈæpl/', unit: 5 },
-            { en: 'orange', cn: '橙子', phonetic: '/ˈɒrɪndʒ/', unit: 5 },
-            { en: 'banana', cn: '香蕉', phonetic: '/bəˈnɑːnə/', unit: 5 },
-            { en: 'watermelon', cn: '西瓜', phonetic: '/ˈwɔːtəmelən/', unit: 5 },
-            { en: 'strawberry', cn: '草莓', phonetic: '/ˈstrɔːbəri/', unit: 5 },
-            { en: 'grape', cn: '葡萄', phonetic: '/ɡreɪp/', unit: 5 },
-            { en: 'buy', cn: '买', phonetic: '/baɪ/', unit: 5 },
-            { en: 'fruit', cn: '水果', phonetic: '/fruːt/', unit: 5 },
-
-            // Unit 6 How many?
-            { en: 'eleven', cn: '十一', phonetic: '/ɪˈlevn/', unit: 6 },
-            { en: 'twelve', cn: '十二', phonetic: '/twelv/', unit: 6 },
-            { en: 'thirteen', cn: '十三', phonetic: '/ˌθɜːˈtiːn/', unit: 6 },
-            { en: 'fourteen', cn: '十四', phonetic: '/ˌfɔːˈtiːn/', unit: 6 },
-            { en: 'fifteen', cn: '十五', phonetic: '/ˌfɪfˈtiːn/', unit: 6 },
-            { en: 'sixteen', cn: '十六', phonetic: '/ˌsɪksˈtiːn/', unit: 6 },
-            { en: 'seventeen', cn: '十七', phonetic: '/ˌsevnˈtiːn/', unit: 6 },
-            { en: 'eighteen', cn: '十八', phonetic: '/ˌeɪˈtiːn/', unit: 6 },
-            { en: 'nineteen', cn: '十九', phonetic: '/ˌnaɪnˈtiːn/', unit: 6 },
-            { en: 'twenty', cn: '二十', phonetic: '/ˈtwenti/', unit: 6 },
-            { en: 'kite', cn: '风筝', phonetic: '/kaɪt/', unit: 6 },
-            { en: 'beautiful', cn: '美丽的', phonetic: '/ˈbjuːtɪfl/', unit: 6 }
-        ];
-
-        // 情景对话数据
-        const dialogueData = [
-            {
-                title: '介绍新朋友',
-                scenarios: [
-                    { speaker: 'A', text: 'Hi, I\'m Amy. I\'m from the UK.', cn: '你好，我是艾米。我来自英国。' },
-                    { speaker: 'user', options: [
-                        { text: 'Hi, I\'m Tom. I\'m from China.', cn: '你好，我是汤姆。我来自中国。', correct: true },
-                        { text: 'Goodbye!', cn: '再见！', correct: false },
-                        { text: 'Thank you.', cn: '谢谢你。', correct: false }
-                    ]}
-                ]
-            },
-            {
-                title: '询问家庭成员',
-                scenarios: [
-                    { speaker: 'A', text: 'Who\'s that man?', cn: '那个男人是谁？' },
-                    { speaker: 'B', text: 'He\'s my father.', cn: '他是我爸爸。' },
-                    { speaker: 'A', text: 'Who\'s that woman?', cn: '那个女人是谁？' },
-                    { speaker: 'user', options: [
-                        { text: 'She\'s my mother.', cn: '她是我妈妈。', correct: true },
-                        { text: 'He\'s my brother.', cn: '他是我哥哥。', correct: false },
-                        { text: 'It\'s a cat.', cn: '它是一只猫。', correct: false }
-                    ]}
-                ]
-            },
-            {
-                title: '描述动物',
-                scenarios: [
-                    { speaker: 'A', text: 'Look at that giraffe!', cn: '看那只长颈鹿！' },
-                    { speaker: 'user', options: [
-                        { text: 'Wow! It\'s so tall!', cn: '哇！它好高啊！', correct: true },
-                        { text: 'I like apples.', cn: '我喜欢苹果。', correct: false },
-                        { text: 'I\'m from China.', cn: '我来自中国。', correct: false }
-                    ]}
-                ]
-            },
-            {
-                title: '询问位置',
-                scenarios: [
-                    { speaker: 'A', text: 'Mom, where is my car?', cn: '妈妈，我的小汽车在哪里？' },
-                    { speaker: 'user', options: [
-                        { text: 'Is it in your toy box?', cn: '它在你的玩具箱里吗？', correct: true },
-                        { text: 'I like grapes.', cn: '我喜欢葡萄。', correct: false },
-                        { text: 'She\'s my teacher.', cn: '她是我的老师。', correct: false }
-                    ]}
-                ]
-            },
-            {
-                title: '询问喜好',
-                scenarios: [
-                    { speaker: 'A', text: 'Do you like pears?', cn: '你喜欢梨吗？' },
-                    { speaker: 'user', options: [
-                        { text: 'Yes, I do.', cn: '是的，我喜欢。', correct: true },
-                        { text: 'It\'s under the chair.', cn: '它在椅子下面。', correct: false },
-                        { text: 'I see twelve.', cn: '我看见十二个。', correct: false }
-                    ]}
-                ]
-            },
-            {
-                title: '询问数量',
-                scenarios: [
-                    { speaker: 'A', text: 'How many kites do you see?', cn: '你看见多少只风筝？' },
-                    { speaker: 'user', options: [
-                        { text: 'I see fifteen.', cn: '我看见十五只。', correct: true },
-                        { text: 'It\'s so long.', cn: '它好长啊。', correct: false },
-                        { text: 'No, I don\'t.', cn: '不，我不喜欢。', correct: false }
-                    ]}
-                ]
-            }
-        ];
+        // 合并所有对话数据（兼容旧代码）
+        const dialogueData = [];
+        for (let unit in dialogueDataByUnit) {
+            dialogueData.push(...dialogueDataByUnit[unit]);
+        }
 
         // 应用状态
         let currentMode = '';
@@ -918,6 +1680,29 @@
         let currentDialogue = null;
         let dialogueStep = 0;
         let dialogueHistory = [];
+        let todayPractice = [];
+        let currentUnit = 1; // 当前学习的单元
+        
+        // 聊天状态
+        let chatState = {
+            currentScenario: null,
+            messageIndex: 0,
+            chatScore: 0,
+            totalResponses: 0
+        };
+        
+        // 看图识词状态
+        let pictureState = {
+            currentWord: null
+        };
+        
+        // 连线配对状态
+        let matchingState = {
+            selectedCards: [],
+            matchedPairs: 0,
+            totalPairs: 6,
+            attempts: 0
+        };
 
         // 初始化
         function init() {
@@ -925,6 +1710,8 @@
             renderCalendar();
             renderWordList();
             updateStats();
+            updateTodayRecommendation();
+            updateUnitProgress();
         }
 
         // 加载统计数据
@@ -934,6 +1721,12 @@
                 const data = JSON.parse(stats);
                 document.getElementById('streakDays').textContent = data.streak || 0;
                 document.getElementById('totalWords').textContent = data.totalWords || 0;
+                
+                // 加载当前单元
+                if (data.currentUnit) {
+                    currentUnit = data.currentUnit;
+                    updateUnitTabs();
+                }
             }
         }
 
@@ -942,7 +1735,8 @@
             const stats = {
                 streak: parseInt(document.getElementById('streakDays').textContent),
                 totalWords: parseInt(document.getElementById('totalWords').textContent),
-                lastCheckin: new Date().toDateString()
+                lastCheckin: new Date().toDateString(),
+                currentUnit: currentUnit
             };
             localStorage.setItem('englishCheckinStats', JSON.stringify(stats));
         }
@@ -972,6 +1766,95 @@
             document.getElementById('streakDays').textContent = streak;
         }
 
+        // 更新今日推荐
+        function updateTodayRecommendation() {
+            const unitWords = wordDataByUnit[currentUnit];
+            const learnedCount = getLearnedCount(currentUnit);
+            
+            // 推荐未学习的单词
+            const recommendedWords = unitWords.slice(learnedCount, learnedCount + 6);
+            const wordNames = recommendedWords.map(w => w.en).join(', ');
+            
+            const dialogues = dialogueDataByUnit[currentUnit] || [];
+            const dialogueTitle = dialogues.length > 0 ? dialogues[0].title : '日常对话';
+            
+            document.getElementById('recUnit').textContent = `Unit ${currentUnit} - ${getUnitTitle(currentUnit)}`;
+            document.getElementById('recWords').innerHTML = `
+                推荐单词：<strong>${wordNames}</strong><br>
+                对话练习：<strong>${dialogueTitle}</strong>
+            `;
+        }
+
+        function getUnitTitle(unit) {
+            const titles = {
+                1: 'Welcome back to school',
+                2: 'My family',
+                3: 'At the zoo',
+                4: 'Where is my car?',
+                5: 'Do you like pears?',
+                6: 'How many?'
+            };
+            return titles[unit] || '';
+        }
+
+        // 获取已学习单词数
+        function getLearnedCount(unit) {
+            const learned = JSON.parse(localStorage.getItem(`learnedWords_unit${unit}`) || '[]');
+            return learned.length;
+        }
+
+        // 更新单元进度
+        function updateUnitProgress() {
+            const unitWords = wordDataByUnit[currentUnit];
+            const learnedCount = getLearnedCount(currentUnit);
+            const progress = (learnedCount / unitWords.length) * 100;
+            
+            document.getElementById('unitProgressText').textContent = `${learnedCount}/${unitWords.length} 单词`;
+            document.getElementById('unitProgressBar').style.width = progress + '%';
+        }
+
+        // 更新单元标签页
+        function updateUnitTabs() {
+            document.querySelectorAll('.unit-tab').forEach((tab, index) => {
+                if (index + 1 === currentUnit) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+        }
+
+        // 选择单元
+        function selectUnit(unit) {
+            currentUnit = unit;
+            updateUnitTabs();
+            updateTodayRecommendation();
+            updateUnitProgress();
+            saveStats();
+            renderWordList();
+        }
+
+        // 切换单元
+        function switchUnit() {
+            const nextUnit = currentUnit >= 6 ? 1 : currentUnit + 1;
+            selectUnit(nextUnit);
+        }
+
+        // 开始每日练习
+        function startDailyPractice() {
+            // 根据推荐自动选择合适的模式
+            const unitWords = wordDataByUnit[currentUnit];
+            const learnedCount = getLearnedCount(currentUnit);
+            
+            if (learnedCount < unitWords.length) {
+                // 还有新单词，从听写开始
+                startMode('dictation');
+            } else {
+                // 单词都学完了，练习对话
+                startMode('dialogue');
+            }
+        }
+
         // 渲染日历
         function renderCalendar() {
             const calendar = document.getElementById('calendar');
@@ -998,8 +1881,9 @@
                 const isToday = day === today.getDate();
                 const checkedClass = isChecked ? 'checked' : '';
                 const todayClass = isToday ? 'today' : '';
+                const clickHandler = isChecked ? `onclick="showCheckinDetail('${dateStr}')"` : '';
                 html += `
-                    <div class="calendar-day ${checkedClass} ${todayClass}">
+                    <div class="calendar-day ${checkedClass} ${todayClass}" ${clickHandler} style="${isChecked ? 'cursor: pointer;' : ''}">
                         <div class="day-number">${day}</div>
                         ${isChecked ? '<div class="day-status">✓</div>' : ''}
                     </div>
@@ -1008,15 +1892,129 @@
             calendar.innerHTML = html;
         }
 
+        // 显示打卡详情
+        function showCheckinDetail(dateStr) {
+            const modal = document.getElementById('checkinDetailModal');
+            const records = JSON.parse(localStorage.getItem('checkinRecords') || '{}');
+            const dayRecord = records[dateStr];
+            
+            const dateObj = new Date(dateStr);
+            const month = dateObj.getMonth() + 1;
+            const day = dateObj.getDate();
+            const totalScore = dayRecord ? dayRecord.reduce((sum, item) => sum + item.score, 0) : 0;
+            
+            document.getElementById('detailDate').innerHTML = `
+                <div class="date-text">${month}月${day}日</div>
+                <div class="score-text">${totalScore}分</div>
+            `;
+            
+            const practiceList = document.getElementById('practiceList');
+            if (!dayRecord || dayRecord.length === 0) {
+                practiceList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <div>暂无练习记录</div>
+                    </div>
+                `;
+            } else {
+                const modeNames = {
+                    'dictation': '听写打字',
+                    'choice': '听音选词',
+                    'repeat': '单词跟读',
+                    'dialogue': '情景交流'
+                };
+                const modeIcons = {
+                    'dictation': '✍️',
+                    'choice': '🎯',
+                    'repeat': '🎤',
+                    'dialogue': '💬'
+                };
+                
+                let html = '';
+                dayRecord.forEach((item, index) => {
+                    html += `
+                        <div class="practice-item">
+                            <div class="practice-icon">${modeIcons[item.mode] || '📚'}</div>
+                            <div class="practice-info">
+                                <div class="practice-name">${modeNames[item.mode] || '练习'}</div>
+                                <div class="practice-detail">答对 ${item.correctCount}/${item.totalWords} 题 · ${item.duration}</div>
+                            </div>
+                            <div class="practice-score">+${item.score}分</div>
+                        </div>
+                    `;
+                });
+                practiceList.innerHTML = html;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        // 关闭打卡详情
+        function closeCheckinDetail() {
+            document.getElementById('checkinDetailModal').classList.add('hidden');
+        }
+
+        // 保存练习记录
+        function savePracticeRecord(mode, score, correctCount, totalWords, durationSeconds) {
+            const today = new Date().toDateString();
+            const records = JSON.parse(localStorage.getItem('checkinRecords') || '{}');
+            
+            if (!records[today]) {
+                records[today] = [];
+            }
+            
+            const minutes = Math.floor(durationSeconds / 60);
+            const seconds = durationSeconds % 60;
+            const duration = `${minutes}分${seconds}秒`;
+            
+            records[today].push({
+                mode: mode,
+                score: score,
+                correctCount: correctCount,
+                totalWords: totalWords,
+                duration: duration,
+                timestamp: Date.now(),
+                unit: currentUnit
+            });
+            
+            localStorage.setItem('checkinRecords', JSON.stringify(records));
+            
+            const checkins = JSON.parse(localStorage.getItem('checkinDates') || '[]');
+            if (!checkins.includes(today)) {
+                checkins.push(today);
+                localStorage.setItem('checkinDates', JSON.stringify(checkins));
+            }
+        }
+
+        // 标记单词为已学习
+        function markWordAsLearned(word) {
+            const key = `learnedWords_unit${currentUnit}`;
+            const learned = JSON.parse(localStorage.getItem(key) || '[]');
+            
+            if (!learned.includes(word.en)) {
+                learned.push(word.en);
+                localStorage.setItem(key, JSON.stringify(learned));
+                updateUnitProgress();
+                updateTodayRecommendation();
+            }
+        }
+
         // 渲染单词列表
         function renderWordList() {
             const list = document.getElementById('wordList');
-            list.innerHTML = wordData.map(word => `
-                <div class="word-item" onclick="speak('${word.en}')">
-                    <div class="en">${word.en}</div>
-                    <div class="cn">${word.cn}</div>
-                </div>
-            `).join('');
+            const unitWords = wordDataByUnit[currentUnit];
+            const learned = JSON.parse(localStorage.getItem(`learnedWords_unit${currentUnit}`) || '[]');
+            
+            list.innerHTML = unitWords.map(word => {
+                const isLearned = learned.includes(word.en);
+                return `
+                    <div class="word-item" onclick="speak('${word.en}')" style="${isLearned ? 'background: #e8f5e9;' : ''}">
+                        <div class="en">${word.en}</div>
+                        <div class="cn">${word.cn}</div>
+                        ${isLearned ? '<div style="font-size: 10px; color: #4caf50; margin-top: 3px;">✓ 已掌握</div>' : ''}
+                    </div>
+                `;
+            }).join('');
         }
 
         // 切换页面
@@ -1025,6 +2023,10 @@
             document.getElementById(page + 'Page').classList.remove('hidden');
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
+            
+            if (page === 'wordbook') {
+                renderWordList();
+            }
         }
 
         // 开始练习模式
@@ -1035,24 +2037,32 @@
             correctCount = 0;
             startTime = Date.now();
             
-            // 随机选择10个单词
-            practiceWords = [...wordData].sort(() => Math.random() - 0.5).slice(0, 10);
+            // 从当前单元选择单词
+            const unitWords = wordDataByUnit[currentUnit];
+            const learned = JSON.parse(localStorage.getItem(`learnedWords_unit${currentUnit}`) || '[]');
+            
+            // 优先选择未学习的单词
+            const unlearned = unitWords.filter(w => !learned.includes(w.en));
+            const mixWords = unlearned.length > 0 ? 
+                unlearned.sort(() => Math.random() - 0.5).slice(0, 10) :
+                unitWords.sort(() => Math.random() - 0.5).slice(0, 10);
+            
+            practiceWords = mixWords;
             
             document.getElementById('homePage').classList.add('hidden');
             document.getElementById('practicePage').classList.remove('hidden');
             document.querySelector('.bottom-nav').classList.add('hidden');
             
-            // 隐藏所有模式
             document.querySelectorAll('.mode-content').forEach(el => el.classList.add('hidden'));
             
             switch(mode) {
-                case 'dictation':
-                    document.getElementById('dictationMode').classList.remove('hidden');
-                    initDictation();
+                case 'picture':
+                    document.getElementById('pictureMode').classList.remove('hidden');
+                    initPictureGame();
                     break;
-                case 'choice':
-                    document.getElementById('choiceMode').classList.remove('hidden');
-                    initChoice();
+                case 'matching':
+                    document.getElementById('matchingMode').classList.remove('hidden');
+                    initMatchingGame();
                     break;
                 case 'repeat':
                     document.getElementById('repeatMode').classList.remove('hidden');
@@ -1103,47 +2113,224 @@
             }
         }
 
-        // ========== 听写模式 ==========
-        function initDictation() {
-            const word = practiceWords[currentWordIndex];
-            document.getElementById('dictationImage').textContent = getWordEmoji(word.en);
-            document.getElementById('dictationMeaning').textContent = word.cn;
-            document.getElementById('dictationInput').value = '';
-            document.getElementById('dictationInput').focus();
+        // ========== 看图识词游戏 ==========
+        function initPictureGame() {
+            const unitWords = wordDataByUnit[currentUnit];
+            const word = unitWords[Math.floor(Math.random() * unitWords.length)];
+            pictureState.currentWord = word;
             
-            setTimeout(() => playCurrentWord(), 500);
+            // 显示大图片（emoji）
+            const emoji = getWordEmoji(word.en);
+            document.getElementById('pictureCard').textContent = emoji;
+            document.getElementById('pictureHint').textContent = `${word.cn} - 选择正确的英文单词`;
+            
+            // 生成选项
+            const options = [word];
+            const otherWords = unitWords.filter(w => w.en !== word.en).sort(() => Math.random() - 0.5).slice(0, 3);
+            options.push(...otherWords);
+            options.sort(() => Math.random() - 0.5);
+            
+            const optionsHtml = options.map(opt => `
+                <button class="word-option-btn" onclick="checkPictureAnswer('${opt.en}', '${word.en}', this)">
+                    ${opt.en}
+                </button>
+            `).join('');
+            document.getElementById('pictureOptions').innerHTML = optionsHtml;
         }
 
-        function getWordEmoji(word) {
-            const emojiMap = {
-                'UK': '🇬🇧', 'Canada': '🇨🇦', 'USA': '🇺🇸', 'China': '🇨🇳',
-                'boy': '👦', 'girl': '👧', 'teacher': '👨‍🏫', 'student': '👨‍🎓',
-                'father': '👨', 'mother': '👩', 'sister': '👧', 'brother': '👦',
-                'grandmother': '👵', 'grandfather': '👴', 'family': '👨‍👩‍👧‍👦',
-                'thin': '🧍', 'fat': '🧍', 'tall': '📏', 'short': '📏',
-                'giraffe': '🦒', 'children': '👦👧',
-                'chair': '🪑', 'desk': '📝', 'cap': '🧢', 'ball': '⚽',
-                'car': '🚗', 'boat': '🚤', 'map': '🗺️', 'toy': '🧸', 'box': '📦',
-                'pear': '🍐', 'apple': '🍎', 'orange': '🍊', 'banana': '🍌',
-                'watermelon': '🍉', 'strawberry': '🍓', 'grape': '🍇', 'fruit': '🍎',
-                'kite': '🪁'
-            };
-            return emojiMap[word] || '🎧';
+        function playPictureWord() {
+            const word = pictureState.currentWord;
+            if (word) {
+                speak(word.en);
+            }
         }
 
-        function checkDictation() {
-            const input = document.getElementById('dictationInput').value.trim().toLowerCase();
-            const word = practiceWords[currentWordIndex];
+        function checkPictureAnswer(selected, correct, btn) {
+            // 禁用所有按钮
+            document.querySelectorAll('.word-option-btn').forEach(b => b.disabled = true);
             
-            if (input === word.en.toLowerCase()) {
+            if (selected === correct) {
+                btn.classList.add('correct');
                 score += 10;
                 correctCount++;
-                showToast('✅ 正确! +' + 10 + '分');
+                showToast('✅ 正确！+' + 10 + '分');
+                markWordAsLearned(pictureState.currentWord);
+                
+                setTimeout(nextQuestion, 1500);
             } else {
-                showToast('❌ 正确答案是: ' + word.en);
+                btn.classList.add('wrong');
+                // 高亮正确答案
+                document.querySelectorAll('.word-option-btn').forEach(b => {
+                    if (b.textContent.trim() === correct) {
+                        b.classList.add('correct');
+                    }
+                });
+                showToast('❌ 正确答案是：' + correct);
+                
+                setTimeout(nextQuestion, 2000);
+            }
+        }
+
+        // 获取单词对应的 emoji 图片
+        function getWordEmoji(word) {
+            const emojiMap = {
+                // Unit 1
+                'UK': '🇬🇧', 'Canada': '🇨🇦', 'USA': '🇺🇸', 'China': '🇨🇳',
+                'she': '👩', 'he': '👨', 'teacher': '👨‍🏫', 'student': '👨‍🎓',
+                'pupil': '👦', 'boy': '👦', 'girl': '👧', 'man': '👨', 'woman': '👩',
+                'friend': '🤝', 'today': '📅', 'new': '✨', 'and': '➕',
+                // Unit 2
+                'father': '👨', 'dad': '👨', 'mother': '👩', 'sister': '👧',
+                'brother': '👦', 'grandmother': '👵', 'grandma': '👵',
+                'grandfather': '👴', 'grandpa': '👴', 'family': '👨‍👩‍👧‍👦',
+                // Unit 3
+                'thin': '🧍', 'fat': '🐼', 'tall': '🦒', 'short': '🧍',
+                'long': '🐍', 'small': '🐜', 'big': '🐘', 'giraffe': '🦒',
+                'so': '✨', 'children': '👦👧', 'tail': '🦊',
+                // Unit 4
+                'on': '📍', 'in': '📦', 'under': '⬇️', 'chair': '🪑',
+                'desk': '📚', 'cap': '🧢', 'ball': '⚽', 'car': '🚗',
+                'boat': '🚤', 'map': '🗺️', 'toy': '🧸', 'box': '📦',
+                // Unit 5
+                'pear': '🍐', 'apple': '🍎', 'orange': '🍊', 'banana': '🍌',
+                'watermelon': '🍉', 'strawberry': '🍓', 'grape': '🍇',
+                'buy': '🛒', 'fruit': '🍎',
+                // Unit 6
+                'eleven': '🔟', 'twelve': '🔟', 'thirteen': '🔟',
+                'fourteen': '🔟', 'fifteen': '🔟', 'sixteen': '🔟',
+                'seventeen': '🔟', 'eighteen': '🔟', 'nineteen': '🔟',
+                'twenty': '🔟', 'kite': '🪁', 'beautiful': '✨'
+            };
+            return emojiMap[word] || '📚';
+        }
+
+        // ========== 连线配对游戏 ==========
+        function initMatchingGame() {
+            matchingState = {
+                selectedCards: [],
+                matchedPairs: 0,
+                totalPairs: 6,
+                attempts: 0
+            };
+            
+            score = 0;
+            correctCount = 0;
+            
+            document.getElementById('matchingScore').textContent = `0/${matchingState.totalPairs} 配对成功`;
+            
+            // 选择 6 个单词
+            const unitWords = wordDataByUnit[currentUnit];
+            const selectedWords = unitWords.slice(0, 6);
+            
+            // 创建卡片对
+            let cards = [];
+            selectedWords.forEach((word, index) => {
+                cards.push({
+                    id: index,
+                    type: 'en',
+                    content: word.en,
+                    emoji: getWordEmoji(word.en),
+                    matchId: index
+                });
+                cards.push({
+                    id: index,
+                    type: 'cn',
+                    content: word.cn,
+                    emoji: null,
+                    matchId: index
+                });
+            });
+            
+            // 打乱卡片
+            cards.sort(() => Math.random() - 0.5);
+            
+            // 渲染卡片
+            const grid = document.getElementById('matchingGrid');
+            grid.innerHTML = '';
+            
+            cards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'matching-card';
+                cardDiv.dataset.index = index;
+                cardDiv.dataset.matchId = card.matchId;
+                cardDiv.dataset.type = card.type;
+                
+                if (card.emoji) {
+                    cardDiv.innerHTML = `<span class="emoji">${card.emoji}</span>${card.content}`;
+                } else {
+                    cardDiv.textContent = card.content;
+                }
+                
+                cardDiv.onclick = () => handleCardClick(cardDiv);
+                grid.appendChild(cardDiv);
+            });
+        }
+
+        function handleCardClick(cardDiv) {
+            // 已经匹配或已选中的卡片不能点击
+            if (cardDiv.classList.contains('matched') || 
+                cardDiv.classList.contains('selected') ||
+                matchingState.selectedCards.length >= 2) {
+                return;
             }
             
-            nextQuestion();
+            // 选中卡片
+            cardDiv.classList.add('selected');
+            matchingState.selectedCards.push(cardDiv);
+            
+            // 选中了两张卡片
+            if (matchingState.selectedCards.length === 2) {
+                matchingState.attempts++;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = matchingState.selectedCards;
+            const matchId1 = card1.dataset.matchId;
+            const matchId2 = card2.dataset.matchId;
+            const type1 = card1.dataset.type;
+            const type2 = card2.dataset.type;
+            
+            // 检查是否匹配（相同 ID 且不同类型）
+            if (matchId1 === matchId2 && type1 !== type2) {
+                // 匹配成功
+                setTimeout(() => {
+                    card1.classList.remove('selected');
+                    card2.classList.remove('selected');
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    
+                    matchingState.matchedPairs++;
+                    matchingState.matchedPairs === 1 ? correctCount++ : '';
+                    score += 10;
+                    
+                    document.getElementById('matchingScore').textContent = 
+                        `${matchingState.matchedPairs}/${matchingState.totalPairs} 配对成功`;
+                    
+                    showToast('✅ 配对成功！+' + 10 + '分');
+                    
+                    // 标记为已学习
+                    const index = parseInt(matchId1);
+                    const word = wordDataByUnit[currentUnit][index];
+                    if (word) markWordAsLearned(word);
+                    
+                    // 检查是否完成
+                    if (matchingState.matchedPairs >= matchingState.totalPairs) {
+                        setTimeout(showResult, 1000);
+                    }
+                }, 500);
+            } else {
+                // 匹配失败
+                setTimeout(() => {
+                    card1.classList.remove('selected');
+                    card2.classList.remove('selected');
+                    showToast('❌ 不匹配，再试一次！');
+                }, 800);
+            }
+            
+            // 清空选中状态
+            matchingState.selectedCards = [];
         }
 
         // ========== 选择题模式 ==========
@@ -1152,7 +2339,6 @@
             document.getElementById('choiceImage').textContent = getWordEmoji(word.en);
             document.getElementById('choiceHint').textContent = '听读音，选择正确的单词';
             
-            // 生成选项
             const options = [word];
             const otherWords = wordData.filter(w => w.en !== word.en).sort(() => Math.random() - 0.5).slice(0, 3);
             options.push(...otherWords);
@@ -1176,6 +2362,10 @@
                 score += 10;
                 correctCount++;
                 showToast('✅ 正确! +' + 10 + '分');
+                
+                // 标记为已学习
+                const word = practiceWords.find(w => w.en === correct);
+                if (word) markWordAsLearned(word);
             } else {
                 btn.classList.add('wrong');
                 document.querySelectorAll('.option-btn').forEach(b => {
@@ -1183,7 +2373,7 @@
                         b.classList.add('correct');
                     }
                 });
-                showToast('❌ 正确答案是: ' + correct);
+                showToast('❌ 正确答案是：' + correct);
             }
             
             setTimeout(nextQuestion, 1500);
@@ -1248,35 +2438,30 @@
             
             recognition.start();
             
-            // 3秒后自动停止
             setTimeout(() => {
                 recognition.stop();
             }, 3000);
         }
 
         function simulateRecording() {
-            // 模拟录音效果
             setTimeout(() => {
                 isRecording = false;
                 document.getElementById('recordBtn').classList.remove('recording');
                 document.getElementById('recordHint').textContent = '按住按钮跟读';
                 
-                // 随机生成相似度（实际应用中应该使用语音识别API）
-                const similarity = Math.floor(Math.random() * 40) + 60; // 60-100%
+                const similarity = Math.floor(Math.random() * 40) + 60;
                 showSimilarity(similarity);
             }, 2000);
         }
 
         function checkPronunciation(spoken, target) {
-            // 简单的相似度计算
             let similarity = 0;
             if (spoken === target) {
                 similarity = 100;
             } else {
-                // 计算编辑距离或简单匹配
                 const common = spoken.split('').filter(c => target.includes(c)).length;
                 similarity = Math.floor((common / Math.max(spoken.length, target.length)) * 100);
-                similarity = Math.max(similarity, 50); // 最低50分鼓励
+                similarity = Math.max(similarity, 50);
             }
             showSimilarity(similarity);
         }
@@ -1291,6 +2476,10 @@
                 correctCount++;
                 showToast('🎉 发音很棒! +' + 10 + '分');
                 scoreEl.style.color = '#52c41a';
+                
+                // 标记为已学习
+                const word = practiceWords[currentWordIndex];
+                if (word) markWordAsLearned(word);
             } else if (similarity >= 60) {
                 score += 5;
                 showToast('👍 还不错，继续加油! +' + 5 + '分');
@@ -1303,96 +2492,225 @@
             setTimeout(nextQuestion, 2000);
         }
 
-        // ========== 情景交流模式 ==========
+        // ========== 情景交流模式 - 聊天对话 ==========
         function initDialogue() {
-            // 随机选择一个对话场景
-            currentDialogue = dialogueData[Math.floor(Math.random() * dialogueData.length)];
-            dialogueStep = 0;
-            dialogueHistory = [];
-            renderDialogue();
+            const dialogues = dialogueDataByUnit[currentUnit] || dialogueDataByUnit[1];
+            currentDialogue = dialogues[Math.floor(Math.random() * dialogues.length)];
+            
+            // 初始化聊天状态
+            chatState = {
+                currentScenario: currentDialogue,
+                messageIndex: 0,
+                chatScore: 0,
+                totalResponses: 0
+            };
+            
+            // 设置聊天标题
+            document.getElementById('chatTitle').textContent = currentDialogue.title;
+            document.getElementById('chatSubtitle').textContent = currentDialogue.scenario || '和 AI 朋友聊天吧!';
+            
+            // 清空聊天记录
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML = '';
+            
+            // 显示第一条消息
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                if (currentDialogue.messages && currentDialogue.messages.length > 0) {
+                    addChatMessage('ai', currentDialogue.messages[0].text, currentDialogue.messages[0].cn);
+                }
+                showChatOptions(currentDialogue.responses);
+            }, 1000);
         }
 
-        function renderDialogue() {
-            const area = document.getElementById('dialogueArea');
-            const options = document.getElementById('responseOptions');
-            
-            // 渲染对话历史
-            let html = '';
-            dialogueHistory.forEach(item => {
-                const isUser = item.speaker === 'user';
-                html += `
-                    <div class="dialogue-bubble ${isUser ? 'user' : ''}">
-                        <div class="avatar">${isUser ? '😊' : '🤖'}</div>
-                        <div class="bubble-content">
-                            <div class="bubble-text">${item.text}</div>
-                            <div class="bubble-translation">${item.cn}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            area.innerHTML = html;
-            area.scrollTop = area.scrollHeight;
-            
-            // 找到下一个需要用户回复的步骤
-            const nextStep = currentDialogue.scenarios[dialogueStep];
-            if (nextStep && nextStep.speaker === 'user') {
-                // 显示选项
-                const optionsHtml = nextStep.options.map((opt, idx) => `
-                    <button class="response-btn" onclick="selectResponse(${idx})">
-                        <div>${opt.text}</div>
-                        <div style="font-size: 12px; color: #999; margin-top: 5px;">${opt.cn}</div>
-                    </button>
-                `).join('');
-                options.innerHTML = optionsHtml;
-            } else if (nextStep) {
-                // AI 说话
-                options.innerHTML = '';
-                setTimeout(() => {
-                    dialogueHistory.push({
-                        speaker: 'A',
-                        text: nextStep.text,
-                        cn: nextStep.cn
-                    });
-                    speak(nextStep.text);
-                    dialogueStep++;
-                    renderDialogue();
-                }, 1000);
-            } else {
-                // 对话结束
-                options.innerHTML = `
-                    <button class="btn btn-primary" style="width: 100%;" onclick="finishDialogue()">
-                        完成对话
-                    </button>
-                `;
+        // 显示正在输入提示
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const indicator = document.createElement('div');
+            indicator.className = 'chat-message';
+            indicator.id = 'typingIndicator';
+            indicator.innerHTML = `
+                <div class="chat-avatar">🤖</div>
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            messagesContainer.appendChild(indicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // 隐藏正在输入提示
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
             }
         }
 
-        function selectResponse(idx) {
-            const step = currentDialogue.scenarios[dialogueStep];
-            const selected = step.options[idx];
+        // 添加聊天消息
+        function addChatMessage(speaker, text, translation) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const isUser = speaker === 'user';
             
-            dialogueHistory.push({
-                speaker: 'user',
-                text: selected.text,
-                cn: selected.cn
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isUser ? 'user' : ''}`;
+            messageDiv.innerHTML = `
+                <div class="chat-avatar">${isUser ? '😊' : '🤖'}</div>
+                <div class="chat-bubble">
+                    <div class="chat-text">${text}</div>
+                    <div class="chat-translation">${translation}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // 如果是 AI 说话，播放语音
+            if (!isUser) {
+                speak(text.split('?')[0].split('.')[0].trim());
+            }
+        }
+
+        // 显示聊天选项
+        function showChatOptions(options) {
+            const optionsContainer = document.getElementById('chatOptions');
+            const hintDiv = document.getElementById('chatHint');
+            
+            if (!options || options.length === 0) {
+                // 对话结束，显示得分
+                showChatResult();
+                return;
+            }
+            
+            hintDiv.style.display = 'block';
+            optionsContainer.innerHTML = '';
+            
+            options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'chat-option-btn';
+                btn.innerHTML = `
+                    <div class="chat-option-text">${opt.text}</div>
+                    <div class="chat-option-cn">${opt.cn}</div>
+                `;
+                btn.onclick = () => selectChatOption(opt, index);
+                optionsContainer.appendChild(btn);
             });
+        }
+
+        // 选择聊天回复
+        function selectChatOption(option) {
+            const totalResponses = ++chatState.totalResponses;
             
-            if (selected.correct) {
-                score += 10;
+            // 添加用户消息
+            addChatMessage('user', option.text, option.cn);
+            
+            // 隐藏选项
+            document.getElementById('chatOptions').innerHTML = '';
+            document.getElementById('chatHint').style.display = 'none';
+            
+            // 判断是否正确
+            if (option.correct) {
+                chatState.chatScore += option.score || 10;
                 correctCount++;
-                showToast('✅ 回答正确! +' + 10 + '分');
+                
+                // 检查是否有下一轮对话
+                if (option.next) {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        
+                        // 添加 AI 的下一条消息
+                        if (option.next[0]) {
+                            addChatMessage('ai', option.next[0].text, option.next[0].cn);
+                            
+                            // 显示下一轮选项
+                            if (option.next[1] && option.next[1].responses) {
+                                setTimeout(() => {
+                                    showChatOptions(option.next[1].responses);
+                                }, 1500);
+                            }
+                        }
+                    }, 1000);
+                    return;
+                }
             } else {
-                // 找到正确答案显示
-                const correct = step.options.find(o => o.correct);
-                showToast('❌ 更好的回答是: ' + correct.text);
+                // 错误的回复
+                showToast(option.feedback || '再试一次更好的表达！');
+                
+                // 显示正确提示
+                const correctOption = chatState.currentScenario.responses.find(r => r.correct);
+                if (correctOption) {
+                    setTimeout(() => {
+                        addChatMessage('ai', '💡 Tip: ' + correctOption.text, correctOption.cn);
+                    }, 800);
+                }
             }
             
-            dialogueStep++;
-            renderDialogue();
+            // 延迟后显示结果或继续
+            setTimeout(() => {
+                if (totalResponses >= 3) {
+                    showChatResult();
+                } else {
+                    // 继续对话
+                    continueDialogue();
+                }
+            }, 1500);
+        }
+
+        // 继续对话
+        function continueDialogue() {
+            // 简单模式：随机选择下一个问题
+            const nextMessages = [
+                { text: 'Great! Let\'s talk more!', cn: '太好了！我们继续聊！' },
+                { text: 'What else can you tell me?', cn: '你还能告诉我什么？' },
+                { text: 'You\'re doing great!', cn: '你做得很好！' }
+            ];
+            
+            const randomMsg = nextMessages[Math.floor(Math.random() * nextMessages.length)];
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                hideTypingIndicator();
+                addChatMessage('ai', randomMsg.text, randomMsg.cn);
+                
+                // 重新显示初始选项
+                showChatOptions(chatState.currentScenario.responses);
+            }, 1000);
+        }
+
+        // 显示聊天结果
+        function showChatResult() {
+            const optionsContainer = document.getElementById('chatOptions');
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            // 计算最终得分
+            const maxScore = chatState.totalResponses * 10;
+            const percentage = Math.round((chatState.chatScore / maxScore) * 100);
+            
+            let stars = '⭐';
+            if (percentage >= 80) stars = '⭐⭐⭐';
+            else if (percentage >= 60) stars = '⭐⭐';
+            
+            optionsContainer.innerHTML = `
+                <div class="chat-score">
+                    <div class="chat-score-value">${chatState.chatScore}分</div>
+                    <div class="chat-score-label">${stars} 表现${percentage >= 80 ? '优秀' : percentage >= 60 ? '不错' : '加油'}!</div>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="finishDialogue()">
+                    完成练习
+                </button>
+            `;
+            
+            // 更新分数
+            score = chatState.chatScore;
         }
 
         function finishDialogue() {
-            nextQuestion();
+            showResult();
         }
 
         // ========== 通用功能 ==========
@@ -1404,11 +2722,14 @@
                 showResult();
             } else {
                 switch(currentMode) {
-                    case 'dictation':
-                        initDictation();
+                    case 'picture':
+                        initPictureGame();
                         break;
-                    case 'choice':
-                        initChoice();
+                    case 'matching':
+                        // 配对游戏只需要初始化一次
+                        if (matchingState.matchedPairs >= matchingState.totalPairs) {
+                            showResult();
+                        }
                         break;
                     case 'repeat':
                         initRepeat();
@@ -1428,7 +2749,6 @@
             const minutes = Math.floor(timeUsed / 60);
             const seconds = timeUsed % 60;
             
-            // 计算星星
             let stars = '⭐';
             if (score >= 80) stars = '⭐⭐⭐';
             else if (score >= 50) stars = '⭐⭐';
@@ -1440,16 +2760,16 @@
                 用时 ${minutes}分${seconds}秒
             `;
             
-            // 更新今日得分
             document.getElementById('todayScore').textContent = score;
             
-            // 更新总单词数
             const currentTotal = parseInt(document.getElementById('totalWords').textContent);
             document.getElementById('totalWords').textContent = currentTotal + practiceWords.length;
             
-            // 保存数据
+            savePracticeRecord(currentMode, score, correctCount, practiceWords.length, timeUsed);
             saveStats();
             renderCalendar();
+            updateUnitProgress();
+            updateTodayRecommendation();
         }
 
         function backToHome() {
@@ -1467,14 +2787,18 @@
             }, 2000);
         }
 
-        // 监听回车键
+        document.getElementById('checkinDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCheckinDetail();
+            }
+        });
+
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter' && currentMode === 'dictation') {
                 checkDictation();
             }
         });
 
-        // 初始化应用
         init();
     </script>
 </body>
