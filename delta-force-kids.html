@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三角洲行动 - 小朋友入门指南</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Comic Sans MS', 'YouYuan', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      color: white;
+      font-size: 3rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .header h2 {
+      color: #fbbf24;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    .header p {
+      color: white;
+      font-size: 1.2rem;
+    }
+    .emoji-big {
+      font-size: 5rem;
+      display: block;
+      margin-bottom: 10px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+    .wiggle {
+      animation: wiggle 1s infinite;
+    }
+    .progress-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .progress-bar-container {
+      width: 100%;
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 24px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      background: linear-gradient(to right, #a855f7, #ec4899);
+      height: 100%;
+      transition: width 0.5s ease;
+      border-radius: 999px;
+    }
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .lesson-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 20px;
+      padding: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .lesson-card:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+    .lesson-card.pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+    .lesson-card.blue { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+    .lesson-card.purple { background: linear-gradient(135deg, #8b5cf6, #d946ef); }
+    .lesson-card.orange { background: linear-gradient(135deg, #f97316, #ef4444); }
+    .lesson-card.indigo { background: linear-gradient(135deg, #6366f1, #a855f7); }
+    .lesson-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+    }
+    .lesson-title {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .lesson-hint {
+      color: rgba(255,255,255,0.9);
+      font-size: 1rem;
+    }
+    .checkmark {
+      font-size: 2.5rem;
+    }
+    .quiz-section {
+      background: linear-gradient(135deg, #fbbf24, #f97316);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .quiz-section h3 {
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    .quiz-section p {
+      color: white;
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+    .btn {
+      background: white;
+      color: #f97316;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 999px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .btn:hover {
+      background: #fef3c7;
+      transform: scale(1.05);
+    }
+    .btn-primary {
+      background: linear-gradient(to right, #8b5cf6, #ec4899);
+      color: white;
+      width: 100%;
+      padding: 20px;
+      font-size: 1.4rem;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(to right, #7c3aed, #db2777);
+    }
+    .btn-success {
+      background: linear-gradient(to right, #22c55e, #16a34a);
+      color: white;
+    }
+    .lesson-content {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .lesson-content h2 {
+      color: #1f2937;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .info-box {
+      background: #fef3c7;
+      border: 4px solid #fbbf24;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .info-box h3 {
+      color: #92400e;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    .info-box p, .info-box li {
+      color: #78350f;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    .info-box ul {
+      list-style: none;
+      padding-left: 10px;
+    }
+    .info-box li::before {
+      content: "✅ ";
+    }
+    .mode-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 15px 0;
+      border-left: 5px solid;
+    }
+    .mode-card.red { border-color: #ef4444; background: #fef2f2; }
+    .mode-card.blue { border-color: #3b82f6; background: #eff6ff; }
+    .mode-card.green { border-color: #22c55e; background: #f0fdf4; }
+    .mode-emoji {
+      font-size: 2.5rem;
+      margin-right: 10px;
+    }
+    .mode-title {
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: #1f2937;
+    }
+    .mode-desc {
+      color: #6b7280;
+      margin-top: 5px;
+    }
+    .back-btn {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 999px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover {
+      background: white;
+      color: #7c3aed;
+    }
+    .operator-card {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      color: white;
+    }
+    .operator-card h4 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .stars {
+      font-size: 1.8rem;
+      margin-top: 10px;
+    }
+    .quiz-option {
+      background: #f3f4f6;
+      border: 4px solid transparent;
+      border-radius: 15px;
+      padding: 15px 20px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+      font-size: 1.2rem;
+    }
+    .quiz-option:hover {
+      background: #e5e7eb;
+    }
+    .quiz-option.selected {
+      background: #a855f7;
+      border-color: #c084fc;
+      color: white;
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+      }
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState } = React;
+
+    const lessons = [
+      {
+        id: 1,
+        title: "这是什么游戏？",
+        emoji: "🎮",
+        color: "pink",
+        content: `
+          <div style="text-align: center;">
+            <div style="font-size: 4rem;" class="wiggle">🎯</div>
+            <h2>欢迎来到三角洲行动！</h2>
+            
+            <div class="info-box" style="background: #fef3c7; border-color: #fbbf24; text-align: left;">
+              <p style="font-size: 1.3rem; margin-bottom: 15px;">👋 小朋友你好呀！</p>
+              <p>你的好朋友正在玩一个超酷的<strong>特种部队游戏</strong>，就像看动作电影一样刺激！</p>
+            </div>
+
+            <div class="info-box" style="text-align: left;">
+              <h3>🌟 游戏里有三种玩法：</h3>
+              
+              <div class="mode-card red">
+                <span class="mode-emoji">🔴</span>
+                <span class="mode-title">危险行动（摸金模式）</span>
+                <p class="mode-desc">收集宝贝→安全回家→变富有的冒险！⚠️ 被打败会丢失装备哦</p>
+              </div>
+              
+              <div class="mode-card blue">
+                <span class="mode-emoji">🔵</span>
+                <span class="mode-title">全面战场（大战场）</span>
+                <p class="mode-desc">32 vs 32 大乱斗！占领据点就能赢 ✅ 可以开坦克、直升机！</p>
+              </div>
+              
+              <div class="mode-card green">
+                <span class="mode-emoji">🟢</span>
+                <span class="mode-title">黑鹰坠落（打电脑）</span>
+                <p class="mode-desc">和好朋友一起打坏蛋，完成故事任务 👶 最适合新手！推荐先玩这个</p>
+              </div>
+            </div>
+
+            <div class="info-box" style="background: #dcfce7; border-color: #22c55e;">
+              <h3 style="color: #166534;">💡 给小朋友的建议：</h3>
+              <ul>
+                <li>先从<strong>黑鹰坠落战役</strong>开始（打电脑，不紧张）</li>
+                <li>叫上好朋友带你一起玩</li>
+                <li>不要怕输，每个高手都是新手过来的</li>
+                <li>玩得开心最重要！</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 2,
+        title: "怎么控制角色？",
+        emoji: "⌨️",
+        color: "blue",
+        content: `
+          <div style="text-align: center;">
+            <div style="font-size: 4rem;" class="wiggle">🎹</div>
+            <h2>键盘就是你的魔法棒！</h2>
+            
+            <div class="info-box" style="text-align: left;">
+              <h3>📝 基础按键（先记住这些就好）：</h3>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                <div style="background: #dbeafe; border: 2px solid #3b82f6; border-radius: 10px; padding: 15px;">
+                  <div style="font-size: 2rem; margin-bottom: 10px;">🚶</div>
+                  <strong style="font-size: 1.2rem;">移动</strong>
+                  <div style="background: white; border-radius: 8px; padding: 10px; margin-top: 10px; font-family: monospace; font-size: 1.1rem;">
+                    W (前)<br/>A (左) S (后) D (右)
+                  </div>
+                  <p style="color: #6b7280; font-size: 0.9rem; margin-top: 8px;">就像走路一样简单！</p>
+                </div>
+
+                <div style="background: #dcfce7; border: 2px solid #22c55e; border-radius: 10px; padding: 15px;">
+                  <div style="font-size: 2rem; margin-bottom: 10px;">🔫</div>
+                  <strong style="font-size: 1.2rem;">射击</strong>
+                  <div style="background: white; border-radius: 8px; padding: 10px; margin-top: 10px; font-family: monospace; font-size: 1.1rem;">
+                    右键 = 瞄准<br/>左键 = 开枪
+                  </div>
+                  <p style="color: #6b7280; font-size: 0.9rem; margin-top: 8px;">鼠标就是你的武器！</p>
+                </div>
+
+                <div style="background: #fef3c7; border: 2px solid #fbbf24; border-radius: 10px; padding: 15px;">
+                  <div style="font-size: 2rem; margin-bottom: 10px;">🦘</div>
+                  <strong style="font-size: 1.2rem;">跳跃</strong>
+                  <div style="background: white; border-radius: 8px; padding: 10px; margin-top: 10px; font-family: monospace; font-size: 1.1rem;">
+                    空格键
+                  </div>
+                  <p style="color: #6b7280; font-size: 0.9rem; margin-top: 8px;">像小兔子一样跳起来！</p>
+                </div>
+
+                <div style="background: #f3e8ff; border: 2px solid #a855f7; border-radius: 10px; padding: 15px;">
+                  <div style="font-size: 2rem; margin-bottom: 10px;">🎒</div>
+                  <strong style="font-size: 1.2rem;">捡东西</strong>
+                  <div style="background: white; border-radius: 8px; padding: 10px; margin-top: 10px; font-family: monospace; font-size: 1.1rem;">
+                    F 键
+                  </div>
+                  <p style="color: #6b7280; font-size: 0.9rem; margin-top: 8px;">看到东西就按 F！</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-box" style="background: #ffedd5; border-color: #f97316;">
+              <h3 style="color: #9a3412;">🎯 小练习：</h3>
+              <ol style="line-height: 2; text-align: left;">
+                <li>进入游戏后，先试试<strong>WASD</strong>走一走</li>
+                <li>按<strong>空格</strong>跳一跳</li>
+                <li>对着靶子按<strong>右键 + 左键</strong>开枪</li>
+                <li>看到地上的东西按<strong>F</strong>捡起来</li>
+              </ol>
+              <p style="color: #ea580c; font-size: 1.2rem; font-weight: bold; margin-top: 15px;">✨ 多练习几次就熟练啦！</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 3,
+        title: "选择你的英雄",
+        emoji: "🦸",
+        color: "purple",
+        content: `
+          <div style="text-align: center;">
+            <div style="font-size: 4rem;" class="wiggle">🦸‍♂️</div>
+            <h2>选择你的超级英雄！</h2>
+            <p style="font-size: 1.2rem; margin: 20px 0;">游戏里有很多<strong>干员</strong>（就是特种英雄），每个人都有特殊本领！</p>
+
+            <div class="operator-card" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 3rem; margin-right: 15px;">🛡️</span>
+                <div>
+                  <h4 style="margin: 0;">凯罗 - 防御专家</h4>
+                  <p style="margin: 5px 0; opacity: 0.9;">最适合新手！像盾牌一样保护大家</p>
+                </div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; text-align: left;">
+                <strong>🌟 特殊本领：</strong>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                  <li>可以放出一个<strong>防护盾</strong>挡子弹</li>
+                  <li>被打时会自动反击</li>
+                  <li>大招让自己变得更硬（更难被打倒）</li>
+                </ul>
+              </div>
+              <div style="background: #fbbf24; color: #78350f; border-radius: 8px; padding: 10px; margin-top: 15px; font-weight: bold;">
+                ⭐ 推荐指数：★★★★★（5 星满分！）
+              </div>
+            </div>
+
+            <div class="operator-card" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 3rem; margin-right: 15px;">💉</span>
+                <div>
+                  <h4 style="margin: 0;">蜂医 - 医疗兵</h4>
+                  <p style="margin: 5px 0; opacity: 0.9;">团队里的医生，大家都喜欢和他组队</p>
+                </div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; text-align: left;">
+                <strong>🌟 特殊本领：</strong>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                  <li>可以用<strong>治疗无人机</strong>给自己和队友加血</li>
+                  <li>用医疗包更快</li>
+                  <li>大招创造一个<strong>治疗区域</strong>，站在里面就一直回血</li>
+                </ul>
+              </div>
+              <div style="background: #fbbf24; color: #78350f; border-radius: 8px; padding: 10px; margin-top: 15px; font-weight: bold;">
+                ⭐ 推荐指数：★★★★★（5 星满分！）
+              </div>
+            </div>
+
+            <div class="operator-card" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 3rem; margin-right: 15px;">⚡</span>
+                <div>
+                  <h4 style="margin: 0;">红狼 - 速度王者</h4>
+                  <p style="margin: 5px 0; opacity: 0.9;">跑得快，冲得猛，像闪电一样</p>
+                </div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; text-align: left;">
+                <strong>🌟 特殊本领：</strong>
+                <ul style="margin-top: 10px; line-height: 1.8;">
+                  <li>可以用<strong>外骨骼</strong>加速冲刺</li>
+                  <li>打败敌人后可以继续冲刺</li>
+                  <li>大招短时间内<strong>无限冲刺</strong>，超级快！</li>
+                </ul>
+              </div>
+              <div style="background: #fbbf24; color: #78350f; border-radius: 8px; padding: 10px; margin-top: 15px; font-weight: bold;">
+                ⭐ 推荐指数：★★★★☆（4 星）
+              </div>
+            </div>
+
+            <div class="info-box" style="background: #fce7f3; border-color: #ec4899;">
+              <h3 style="color: #9d174d;">💡 小朋友选哪个？</h3>
+              <p style="font-size: 1.2rem;">🎯 <strong>第一次玩：选凯罗或蜂医</strong></p>
+              <p>因为他们生存能力强，不容易被打败，可以慢慢熟悉游戏！</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 4,
+        title: "认识你的武器",
+        emoji: "🔫",
+        color: "orange",
+        content: `
+          <div style="text-align: center;">
+            <div style="font-size: 4rem;" class="wiggle">🔫</div>
+            <h2>挑选你的武器！</h2>
+            
+            <div class="info-box" style="text-align: left;">
+              <h3 class="text-center">🎯 5 种武器类型：</h3>
+              
+              <div style="space-y: 15px;">
+                <div style="background: #f0fdf4; border-left: 5px solid #22c55e; padding: 15px; margin: 15px 0; border-radius: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="font-size: 1.2rem;">突击步枪</strong>
+                    <span style="font-size: 1.5rem;">⭐⭐⭐⭐⭐</span>
+                  </div>
+                  <p><strong>特点：</strong>什么距离都能用，最平衡</p>
+                  <p><strong>推荐：</strong>M4A1（后坐力小，新手之友）</p>
+                  <p style="color: #16a34a; font-weight: bold; margin-top: 8px;">✅ 新手首选！</p>
+                </div>
+
+                <div style="background: #eff6ff; border-left: 5px solid #3b82f6; padding: 15px; margin: 15px 0; border-radius: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="font-size: 1.2rem;">冲锋枪</strong>
+                    <span style="font-size: 1.5rem;">⭐⭐⭐⭐</span>
+                  </div>
+                  <p><strong>特点：</strong>射速超快，近距离厉害</p>
+                  <p><strong>推荐：</strong>Vector（近战王者）</p>
+                  <p style="color: #2563eb; font-weight: bold; margin-top: 8px;">✅ 适合喜欢冲锋的小朋友</p>
+                </div>
+
+                <div style="background: #faf5ff; border-left: 5px solid #a855f7; padding: 15px; margin: 15px 0; border-radius: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="font-size: 1.2rem;">狙击枪</strong>
+                    <span style="font-size: 1.5rem;">⭐⭐</span>
+                  </div>
+                  <p><strong>特点：</strong>一枪一个，但很难瞄准</p>
+                  <p style="color: #9333ea; font-weight: bold; margin-top: 8px;">⚠️ 需要练习，不建议新手</p>
+                </div>
+
+                <div style="background: #fefce8; border-left: 5px solid #eab308; padding: 15px; margin: 15px 0; border-radius: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="font-size: 1.2rem;">轻机枪</strong>
+                    <span style="font-size: 1.5rem;">⭐⭐⭐</span>
+                  </div>
+                  <p><strong>特点：</strong>子弹超多，可以一直扫射</p>
+                  <p style="color: #ca8a04; font-weight: bold; margin-top: 8px;">⚠️ 有点重，移动慢</p>
+                </div>
+
+                <div style="background: #fef2f2; border-left: 5px solid #ef4444; padding: 15px; margin: 15px 0; border-radius: 8px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="font-size: 1.2rem;">霰弹枪</strong>
+                    <span style="font-size: 1.5rem;">⭐⭐</span>
+                  </div>
+                  <p><strong>特点：</strong>贴脸无敌，但远了就没用了</p>
+                  <p style="color: #dc2626; font-weight: bold; margin-top: 8px;">⚠️ 需要靠近敌人，有难度</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fbbf24, #f97316); border-radius: 15px; padding: 25px; margin: 25px 0;">
+              <h3 style="color: white; margin-bottom: 15px;">🎁 新手武器套装：</h3>
+              <div style="background: white; border-radius: 10px; padding: 20px; text-align: left;">
+                <p style="font-size: 1.2rem; margin-bottom: 10px;"><strong>主武器：</strong>M4A1 突击步枪</p>
+                <p style="color: #6b7280; margin-bottom: 10px;">配件推荐：</p>
+                <ul style="line-height: 2;">
+                  <li>1️⃣ <strong>红点瞄准镜</strong>（看得更清楚）</li>
+                  <li>2️⃣ <strong>消音器</strong>（敌人听不到枪声）</li>
+                  <li>3️⃣ <strong>握把</strong>（枪更稳）</li>
+                  <li>4️⃣ <strong>扩容弹匣</strong>（子弹更多）</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="info-box" style="background: #dbeafe; border-color: #3b82f6;">
+              <h3 style="color: #1e40af;">💡 小贴士：</h3>
+              <ul>
+                <li>不要频繁换武器，先用一把练熟</li>
+                <li>爆头伤害更高（瞄准头部）</li>
+                <li>没子弹了找掩体躲起来再换弹</li>
+                <li>武器可以改装，让它更适合你</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 5,
+        title: "成为战术大师",
+        emoji: "🧠",
+        color: "indigo",
+        content: `
+          <div style="text-align: center;">
+            <div style="font-size: 4rem;" class="wiggle">🧠</div>
+            <h2>聪明地战斗！</h2>
+            <p style="font-size: 1.2rem; margin: 20px 0;">玩游戏不只是比谁枪法准，<strong>动脑筋</strong>更重要！</p>
+
+            <div style="background: linear-gradient(135deg, #ef4444, #f43f5e); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 2.5rem; margin-right: 15px;">🏃</span>
+                <h3 style="margin: 0; font-size: 1.5rem;">1. 永远找掩体</h3>
+              </div>
+              <p style="line-height: 1.8;">不要在空地上站着！躲在墙后、箱子后面、树后面。<strong>露出头打几枪就缩回去</strong>，让敌人打不到你！</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 2.5rem; margin-right: 15px;">👀</span>
+                <h3 style="margin: 0; font-size: 1.5rem;">2. 先观察再行动</h3>
+              </div>
+              <p style="line-height: 1.8;">冲进去之前，先看看周围有没有敌人。用小地图（右上角）看看队友在哪，敌人在哪。</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #22c55e, #10b981); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 2.5rem; margin-right: 15px;">🎯</span>
+                <h3 style="margin: 0; font-size: 1.5rem;">3. 准星放在敌人可能出现的地方</h3>
+              </div>
+              <p style="line-height: 1.8;">走路的时候不要看着地面！把准星放在<strong>门口、拐角处</strong>，这样敌人一出现你就能立刻开枪。</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #a855f7, #d946ef); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 2.5rem; margin-right: 15px;">👂</span>
+                <h3 style="margin: 0; font-size: 1.5rem;">4. 用耳朵听</h3>
+              </div>
+              <p style="line-height: 1.8;">戴上耳机！你可以听到脚步声、枪声、技能声音，知道敌人在哪！</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fbbf24, #f97316); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+              <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 2.5rem; margin-right: 15px;">🤝</span>
+                <h3 style="margin: 0; font-size: 1.5rem;">5. 和队友合作</h3>
+              </div>
+              <p style="line-height: 1.8;">这是<strong>团队游戏</strong>！和好朋友一起互相报告敌人位置，一起攻击同一个敌人，队友倒地去救他！</p>
+            </div>
+
+            <div class="info-box" style="background: #dcfce7; border-color: #22c55e;">
+              <h3 style="color: #166534;">🌟 新手生存口诀：</h3>
+              <div style="line-height: 2.5; font-size: 1.2rem;">
+                <p>🏃 <strong>见人就躲</strong>（先找掩体）</p>
+                <p>👀 <strong>先看再打</strong>（观察情况）</p>
+                <p>🎯 <strong>瞄准再开枪</strong>（不要乱打）</p>
+                <p>🤝 <strong>跟着队友</strong>（不要落单）</p>
+                <p>💪 <strong>输了没关系</strong>（下次再来）</p>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 6,
+        title: "和好朋友一起玩",
+        emoji: "👫",
+        color: "pink",
+        content: `
+          <div style="text-align: center;">
+            <div style="font-size: 4rem;" class="wiggle">👫</div>
+            <h2>这才是游戏的乐趣！</h2>
+            
+            <div class="info-box" style="text-align: left;">
+              <h3>🎉 现在你知道：</h3>
+              <ul style="line-height: 2.2;">
+                <li>游戏有三种模式可以玩</li>
+                <li>WASD 移动，鼠标射击，F 捡东西</li>
+                <li>新手选凯罗或蜂医</li>
+                <li>用 M4A1 突击步枪</li>
+                <li>躲掩体、听声音、跟队友</li>
+              </ul>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fbbf24, #f97316); border-radius: 15px; padding: 25px; margin: 25px 0;">
+              <h3 style="color: white; margin-bottom: 20px; font-size: 1.5rem;">🚀 第一步怎么做？</h3>
+              <div style="text-align: left; color: white;">
+                <div style="display: flex; margin-bottom: 20px;">
+                  <span style="font-size: 2.5rem; margin-right: 15px;">1️⃣</span>
+                  <div>
+                    <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 5px;">告诉好朋友</p>
+                    <p>"我也想玩三角洲行动，可以教我吗？"</p>
+                  </div>
+                </div>
+                <div style="display: flex; margin-bottom: 20px;">
+                  <span style="font-size: 2.5rem; margin-right: 15px;">2️⃣</span>
+                  <div>
+                    <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 5px;">邀请他们带你玩</p>
+                    <p>"我们一起打黑鹰坠落战役吧！"</p>
+                  </div>
+                </div>
+                <div style="display: flex; margin-bottom: 20px;">
+                  <span style="font-size: 2.5rem; margin-right: 15px;">3️⃣</span>
+                  <div>
+                    <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 5px;">不要怕菜</p>
+                    <p>每个高手都是从新手开始的！</p>
+                  </div>
+                </div>
+                <div style="display: flex;">
+                  <span style="font-size: 2.5rem; margin-right: 15px;">4️⃣</span>
+                  <div>
+                    <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 5px;">玩得开心</p>
+                    <p>输赢不重要，和朋友一起玩才重要！</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-box" style="background: #f3e8ff; border-color: #a855f7;">
+              <h3 style="color: #6b21a8;">💬 可以和好朋友聊：</h3>
+              <div style="line-height: 2;">
+                <p>• "你最喜欢哪个干员？"</p>
+                <p>• "你觉得 M4A1 好用还是 AK 好用？"</p>
+                <p>• "上次我们打的那个关卡好难啊！"</p>
+                <p>• "这周末一起玩好不好？"</p>
+              </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #22c55e, #3b82f6); border-radius: 15px; padding: 30px; margin-top: 25px;">
+              <div style="font-size: 3rem; margin-bottom: 15px;">🎊</div>
+              <h3 style="color: white; font-size: 1.8rem; margin-bottom: 15px;">恭喜你学完所有课程！</h3>
+              <p style="color: white; font-size: 1.3rem; line-height: 2;">
+                现在你已经准备好和好朋友一起玩了！
+                <br/>
+                <strong>加油，小特种兵！</strong> 💪
+              </p>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    const quizQuestions = [
+      { question: "新手应该从哪个模式开始玩？", options: ["危险行动", "全面战场", "黑鹰坠落战役", "随便哪个"], answer: 2 },
+      { question: "哪个键是捡东西的？", options: ["W", "F", "R", "T"], answer: 1 },
+      { question: "新手最推荐用什么武器？", options: ["狙击枪", "霰弹枪", "M4A1 突击步枪", "手枪"], answer: 2 },
+      { question: "看到敌人应该先做什么？", options: ["直接冲", "找掩体躲起来", "闭上眼睛", "逃跑"], answer: 1 },
+      { question: "这个游戏最重要的是什么？", options: ["枪法准", "和朋友一起玩", "装备好", "等级高"], answer: 1 }
+    ];
+
+    function App() {
+      const [view, setView] = useState('home');
+      const [selectedLesson, setSelectedLesson] = useState(null);
+      const [completed, setCompleted] = useState([]);
+      const [quizIndex, setQuizIndex] = useState(0);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [score, setScore] = useState(null);
+      const [correctCount, setCorrectCount] = useState(0);
+
+      const progress = Math.round((completed.length / lessons.length) * 100);
+
+      const createConfetti = () => {
+        const colors = ['#ff0', '#f00', '#0f0', '#00f', '#f0f', '#0ff'];
+        for (let i = 0; i < 50; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDelay = Math.random() * 2 + 's';
+          document.body.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 5000);
+        }
+      };
+
+      const handleComplete = (id) => {
+        if (!completed.includes(id)) {
+          setCompleted([...completed, id]);
+        }
+        setView('home');
+      };
+
+      const handleQuizAnswer = (index) => {
+        setSelectedAnswer(index);
+        if (index === quizQuestions[quizIndex].answer) {
+          setCorrectCount(correctCount + 1);
+        }
+      };
+
+      const handleNextQuestion = () => {
+        if (quizIndex < quizQuestions.length - 1) {
+          setQuizIndex(quizIndex + 1);
+          setSelectedAnswer(null);
+        } else {
+          const finalScore = (correctCount / quizQuestions.length) * 100;
+          setScore(finalScore);
+          if (finalScore >= 60) {
+            createConfetti();
+          }
+        }
+      };
+
+      const resetQuiz = () => {
+        setQuizIndex(0);
+        setSelectedAnswer(null);
+        setScore(null);
+        setCorrectCount(0);
+      };
+
+      // 首页
+      if (view === 'home') {
+        return (
+          <div className="container">
+            <div className="header">
+              <span className="emoji-big">🎯</span>
+              <h1>三角洲行动</h1>
+              <h2>👾 小朋友入门指南 👾</h2>
+              <p>学会这些，就能和好朋友一起聊天玩游戏啦！</p>
+            </div>
+
+            <div className="progress-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>📊 学习进度</span>
+                <span style={{ color: '#a855f7', fontWeight: 'bold', fontSize: '1.3rem' }}>{progress}%</span>
+              </div>
+              <div className="progress-bar-container">
+                <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+              </div>
+              <p style={{ marginTop: '10px', color: '#6b7280' }}>
+                ✨ 已完成 {completed.length} / {lessons.length} 个课程
+                {completed.length === lessons.length && <span style={{ marginLeft: '10px', color: '#ec4899' }}>🎉 太棒了！</span>}
+              </p>
+            </div>
+
+            <div className="lessons-grid">
+              {lessons.map((lesson) => (
+                <div 
+                  key={lesson.id}
+                  className={`lesson-card ${lesson.color}`}
+                  onClick={() => { setSelectedLesson(lesson); setView('lesson'); }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                    <span className="lesson-emoji">{lesson.emoji}</span>
+                    {completed.includes(lesson.id) ? (
+                      <span className="checkmark">✅</span>
+                    ) : (
+                      <span style={{ fontSize: '2rem', opacity: 0.5 }}>⭕</span>
+                    )}
+                  </div>
+                  <div className="lesson-title">{lesson.title}</div>
+                  <div className="lesson-hint">点击开始学习 →</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="quiz-section">
+              <span style={{ fontSize: '4rem', display: 'block', marginBottom: '15px' }}>🏆</span>
+              <h3>学完来挑战吧！</h3>
+              <p>回答{quizQuestions.length}个问题，看看你学会了多少～</p>
+              <button className="btn" onClick={() => { resetQuiz(); setView('quiz'); }}>
+                🚀 开始挑战
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // 课程页
+      if (view === 'lesson' && selectedLesson) {
+        return (
+          <div className="container">
+            <button className="back-btn" onClick={() => setView('home')}>
+              ← 返回首页
+            </button>
+            <div className="lesson-content">
+              <div dangerouslySetInnerHTML={{ __html: selectedLesson.content }} />
+              <button 
+                className="btn btn-primary" 
+                style={{ marginTop: '30px' }}
+                onClick={() => handleComplete(selectedLesson.id)}
+              >
+                {completed.includes(selectedLesson.id) ? '✓ 已经完成啦！' : '✨ 我学完了！'}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // 测试页
+      if (view === 'quiz') {
+        if (score !== null) {
+          return (
+            <div className="container" style={{ maxWidth: '600px' }}>
+              <div className="lesson-content" style={{ textAlign: 'center' }}>
+                <span style={{ fontSize: '5rem', display: 'block', marginBottom: '20px' }}>🏆</span>
+                <h2 style={{ color: '#a855f7', fontSize: '2.5rem', marginBottom: '20px' }}>挑战完成！</h2>
+                <div style={{ fontSize: '5rem', fontWeight: 'bold', background: 'linear-gradient(to right, #fbbf24, #f97316)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '20px' }}>
+                  {Math.round(score)}分
+                </div>
+                <p style={{ fontSize: '1.5rem', color: '#6b7280', marginBottom: '30px' }}>
+                  {score >= 80 ? '🌟 太厉害了！你是天才！' : score >= 60 ? '✨ 很棒！继续加油！' : '💪 不错哦，再看看教程～'}
+                </p>
+                <div style={{ display: 'flex', gap: '15px' }}>
+                  <button className="btn btn-primary" onClick={() => setView('home')}>🏠 返回首页</button>
+                  <button className="btn" style={{ background: '#e5e7eb', color: '#374151' }} onClick={() => { resetQuiz(); setView('quiz'); }}>🔄 再玩一次</button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        const question = quizQuestions[quizIndex];
+        return (
+          <div className="container" style={{ maxWidth: '700px' }}>
+            <div style={{ marginBottom: '30px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', color: 'white' }}>
+                <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>问题 {quizIndex + 1} / {quizQuestions.length}</span>
+                <button onClick={() => setView('home')} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1rem' }}>退出挑战</button>
+              </div>
+              <div className="progress-bar-container">
+                <div className="progress-bar" style={{ width: `${((quizIndex + 1) / quizQuestions.length) * 100}%`, background: '#fbbf24' }}></div>
+              </div>
+            </div>
+
+            <div className="lesson-content">
+              <span style={{ fontSize: '3rem', display: 'block', marginBottom: '20px' }}>🤔</span>
+              <h2 style={{ color: '#1f2937', marginBottom: '25px', fontSize: '1.5rem' }}>{question.question}</h2>
+              <div>
+                {question.options.map((option, index) => (
+                  <div 
+                    key={index}
+                    className={`quiz-option ${selectedAnswer === index ? 'selected' : ''}`}
+                    onClick={() => handleQuizAnswer(index)}
+                  >
+                    <strong style={{ marginRight: '10px' }}>{String.fromCharCode(65 + index)}.</strong>
+                    {option}
+                  </div>
+                ))}
+              </div>
+              <button 
+                className="btn btn-success" 
+                style={{ marginTop: '25px', width: '100%' }}
+                disabled={selectedAnswer === null}
+                onClick={handleNextQuestion}
+              >
+                {quizIndex < quizQuestions.length - 1 ? '下一题 →' : '交卷！🎉'}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
