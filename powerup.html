@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Power Up 2 每日打卡 - 剑桥少儿英语</title>
     <style>
+        /* 微信环境提示 */
+        .wechat-notice {
+            display: none;
+            background: #ff9800;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .wechat-notice.show {
+            display: block;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -725,6 +739,12 @@
     </style>
 </head>
 <body>
+    <!-- 微信环境提示 -->
+    <div class="wechat-notice" id="wechatNotice">
+        💡 检测到您在微信中打开，可能无法播放声音<br>
+        请点击右上角 <strong>「...」</strong> → 选择 <strong>「在浏览器中打开」</strong>
+    </div>
+
     <div class="header">
         <h1>🚀 Power Up 2 每日打卡</h1>
         <div class="subtitle">剑桥少儿英语 A1+-A2 级别</div>
@@ -2051,8 +2071,19 @@
             showTranslation: false
         };
 
+        // 检测微信环境并提示
+        function checkWechatEnvironment() {
+            const ua = navigator.userAgent.toLowerCase();
+            const isWechat = ua.indexOf('micromessenger') !== -1;
+            
+            if (isWechat) {
+                document.getElementById('wechatNotice').classList.add('show');
+            }
+        }
+
         // 初始化
         function init() {
+            checkWechatEnvironment();
             loadStats();
             renderCalendar();
             renderUnitTabs();
