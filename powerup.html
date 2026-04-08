@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Power Up 2 每日打卡 - 剑桥少儿英语</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.95);
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header .subtitle {
+            color: #888;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255,255,255,0.9);
+            margin: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .main-content {
+            padding: 0 15px;
+        }
+
+        /* 今日学习计划 */
+        .today-plan {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .plan-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .plan-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .plan-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .plan-subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .plan-tasks {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .plan-task {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .plan-task:hover {
+            background: #e8f0ff;
+        }
+
+        .plan-task.completed {
+            background: #e8f5e9;
+            opacity: 0.8;
+        }
+
+        .task-icon {
+            font-size: 28px;
+            margin-right: 12px;
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .task-desc {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .task-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .task-badge.video { background: #ff6b6b; }
+        .task-badge.grammar { background: #4ecdc4; }
+        .task-badge.vocab { background: #45b7d1; }
+        .task-badge.reading { background: #96ceb4; }
+        .task-badge.speaking { background: #feca57; color: #333; }
+
+        /* 学习模式选择 */
+        .mode-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .mode-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .mode-card:active {
+            transform: scale(0.95);
+        }
+
+        .mode-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .mode-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .mode-desc {
+            font-size: 11px;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        /* 练习区域 */
+        .practice-area {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            min-height: 400px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* 绘本阅读模式 */
+        .storybook-container {
+            margin: 20px 0;
+        }
+
+        .storybook-page {
+            background: #fff;
+            border: 3px solid #f0f0f0;
+            border-radius: 20px;
+            padding: 30px 25px;
+            margin-bottom: 20px;
+            min-height: 300px;
+        }
+
+        .storybook-illustration {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .storybook-illustration .scene-emoji {
+            font-size: 100px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .storybook-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .storybook-text .highlight-word {
+            background: #fff9e6;
+            padding: 2px 8px;
+            border-radius: 6px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .storybook-translation {
+            font-size: 14px;
+            color: #888;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .storybook-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .storybook-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 20px;
+            background: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .storybook-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .storybook-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .page-indicator {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .page-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+
+        .page-dot.active {
+            background: #667eea;
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .page-dot.completed {
+            background: #52c41a;
+        }
+
+        /* 题目选项 */
+        .question-area {
+            margin: 20px 0;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            text-align: left;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option-btn.correct {
+            border-color: #52c41a;
+            background: #f6ffed;
+        }
+
+        .option-btn.wrong {
+            border-color: #ff4d4f;
+            background: #fff1f0;
+        }
+
+        /* 语法练习 */
+        .grammar-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grammar-rule {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .grammar-example {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .grammar-example em {
+            color: #667eea;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* 填空练习 */
+        .fill-blank {
+            font-size: 18px;
+            line-height: 2;
+            color: #333;
+        }
+
+        .blank-input {
+            border: none;
+            border-bottom: 2px solid #667eea;
+            padding: 5px 10px;
+            font-size: 18px;
+            color: #667eea;
+            outline: none;
+            width: 120px;
+            text-align: center;
+        }
+
+        /* 阅读理解 */
+        .reading-text {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .reading-text .highlight {
+            background: #fff9e6;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* 按钮 */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-success {
+            background: #52c41a;
+            color: white;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* 结果展示 */
+        .result-area {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .result-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .stars {
+            font-size: 30px;
+            color: #ffc107;
+            margin: 15px 0;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            text-align: center;
+            padding: 5px 20px;
+            cursor: pointer;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .nav-item.active .nav-label {
+            color: #667eea;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 提示消息 */
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* 日历 */
+        .checkin-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #f0f0f0;
+            font-size: 14px;
+        }
+
+        .calendar-day.checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .day-number {
+            font-weight: 600;
+        }
+
+        .day-status {
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* 单元选择 */
+        .unit-selector {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .unit-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .unit-tab {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .unit-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .hidden-page {
+            display: none !important;
+        }
+
+        /* 打卡详情弹窗 */
+        .checkin-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkin-detail-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-close {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .practice-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .practice-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .practice-info {
+            flex: 1;
+        }
+
+        .practice-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .practice-detail {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .practice-score {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Power Up 2 每日打卡</h1>
+        <div class="subtitle">剑桥少儿英语 A1+-A2 级别</div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value" id="streakDays">0</div>
+            <div class="stat-label">连续打卡</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="totalTasks">0</div>
+            <div class="stat-label">完成任务</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="todayScore">0</div>
+            <div class="stat-label">今日积分</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- 首页 -->
+        <div id="homePage" class="page">
+            <!-- 今日学习计划 -->
+            <div class="today-plan">
+                <div class="plan-header">
+                    <div class="plan-icon">📚</div>
+                    <div>
+                        <div class="plan-title" id="planTitle">Unit 1: Family First!</div>
+                        <div class="plan-subtitle" id="planSubtitle">家庭与朋友 - 每日学习计划</div>
+                    </div>
+                </div>
+                <div class="plan-tasks" id="planTasks">
+                    <!-- 任务列表动态生成 -->
+                </div>
+            </div>
+
+            <!-- 单元选择 -->
+            <div class="unit-selector">
+                <div class="unit-tabs" id="unitTabs">
+                    <!-- 单元标签动态生成 -->
+                </div>
+            </div>
+
+            <!-- 学习模式 -->
+            <div class="mode-selector">
+                <div class="mode-card" onclick="startMode('storybook')">
+                    <div class="mode-icon">📖</div>
+                    <div class="mode-title">绘本阅读</div>
+                    <div class="mode-desc">看图读故事</div>
+                </div>
+                <div class="mode-card" onclick="startMode('grammar')">
+                    <div class="mode-icon">📝</div>
+                    <div class="mode-title">语法练习</div>
+                    <div class="mode-desc">填空与改错</div>
+                </div>
+                <div class="mode-card" onclick="startMode('reading')">
+                    <div class="mode-icon">📖</div>
+                    <div class="mode-title">阅读理解</div>
+                    <div class="mode-desc">短文理解</div>
+                </div>
+                <div class="mode-card" onclick="startMode('speaking')">
+                    <div class="mode-icon">🎤</div>
+                    <div class="mode-title">口语表达</div>
+                    <div class="mode-desc">情景对话</div>
+                </div>
+            </div>
+
+            <!-- 打卡日历 -->
+            <div class="practice-area">
+                <h3 style="margin-bottom: 15px; color: #333;">📅 本月打卡</h3>
+                <div class="checkin-calendar" id="calendar"></div>
+                <div style="text-align: center; margin-top: 15px; color: #888; font-size: 13px;">
+                    💡 点击有 ✓ 的日期查看详情
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习页面 -->
+        <div id="practicePage" class="page hidden-page">
+            <div class="practice-area">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+
+                <!-- 绘本阅读模式 -->
+                <div id="storybookMode" class="mode-content hidden-page">
+                    <div class="storybook-container">
+                        <div class="storybook-page">
+                            <div class="storybook-illustration" id="storybookIllustration">
+                                <span class="scene-emoji" id="sceneEmoji">🏠</span>
+                            </div>
+                            <div class="storybook-text" id="storybookText">
+                                Hello! Welcome to our story...
+                            </div>
+                            <div class="storybook-translation" id="storybookTranslation">
+                                你好！欢迎来到我们的故事...
+                            </div>
+                        </div>
+                        <div class="storybook-controls">
+                            <button class="storybook-btn" onclick="readAloud()">
+                                🔊 朗读
+                            </button>
+                            <button class="storybook-btn" onclick="showTranslation()">
+                                📝 显示翻译
+                            </button>
+                        </div>
+                        <div class="storybook-nav">
+                            <button class="storybook-btn" onclick="prevPage()" id="prevBtn">⬅️ 上一页</button>
+                            <span class="page-indicator" id="pageIndicator">1 / 4</span>
+                            <button class="storybook-btn primary" onclick="nextPage()" id="nextBtn">下一页 ➡️</button>
+                        </div>
+                        <div class="page-dots" id="pageDots"></div>
+                    </div>
+                    <div id="storybookQuiz" style="margin-top: 20px;">
+                        <!-- 理解题目 -->
+                    </div>
+                </div>
+
+                <!-- 语法练习 -->
+                <div id="grammarMode" class="mode-content hidden-page">
+                    <div class="grammar-card" id="grammarCard">
+                        <div class="grammar-rule" id="grammarRule">Grammar Focus: Present Simple</div>
+                        <div class="grammar-example" id="grammarExample">
+                            I <em>like</em> apples. / She <em>likes</em> bananas.
+                        </div>
+                    </div>
+                    <div class="question-area" id="grammarQuestions">
+                        <!-- 语法题目 -->
+                    </div>
+                </div>
+
+                <!-- 阅读理解 -->
+                <div id="readingMode" class="mode-content hidden-page">
+                    <div class="reading-text" id="readingText">
+                        <!-- 阅读文章 -->
+                    </div>
+                    <div class="question-area" id="readingQuestions">
+                        <!-- 理解题目 -->
+                    </div>
+                </div>
+
+                <!-- 口语表达 -->
+                <div id="speakingMode" class="mode-content hidden-page">
+                    <div id="chatContainer">
+                        <!-- 对话内容 -->
+                    </div>
+                    <div class="options-list" id="speakingOptions">
+                        <!-- 选项 -->
+                    </div>
+                </div>
+
+                <!-- 结果展示 -->
+                <div id="resultMode" class="mode-content hidden-page">
+                    <div class="result-area">
+                        <div class="result-icon" id="resultIcon">🎉</div>
+                        <div class="stars" id="resultStars">⭐⭐⭐</div>
+                        <div class="result-score" id="resultScore">100 分</div>
+                        <div style="color: #666; margin: 15px 0;" id="resultDetail">
+                            完成 5/5 题<br>
+                            用时 3 分 25 秒
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 20px;" onclick="backToHome()">
+                            返回首页
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 打卡详情弹窗 -->
+        <div id="checkinDetailModal" class="checkin-detail-modal hidden-page">
+            <div class="checkin-detail-content">
+                <div class="modal-header">
+                    <div class="modal-title">打卡详情</div>
+                    <button class="modal-close" onclick="closeCheckinDetail()">×</button>
+                </div>
+                <div id="detailDate" style="text-align: center; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; margin-bottom: 20px;">
+                    <div>3 月 20 日</div>
+                    <div style="font-size: 32px; font-weight: bold; margin-top: 5px;">100 分</div>
+                </div>
+                <div id="practiceList">
+                    <!-- 练习记录 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchPage('home')">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">首页</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('wordbook')">
+            <div class="nav-icon">📚</div>
+            <div class="nav-label">词汇</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('profile')">
+            <div class="nav-icon">👤</div>
+            <div class="nav-label">我的</div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Power Up 2 课程体系 (A1+ to A2) - 每天内容轮换
+        const powerUp1Data = {
+            units: [
+                {
+                    id: 1,
+                    title: 'Our Amazing World',
+                    topic: '自然与世界',
+                    vocab: [
+                        { en: 'mountain', cn: '山', emoji: '⛰️' },
+                        { en: 'waterfall', cn: '瀑布', emoji: '💧' },
+                        { en: 'volcano', cn: '火山', emoji: '🌋' },
+                        { en: 'desert', cn: '沙漠', emoji: '🏜️' },
+                        { en: 'island', cn: '岛屿', emoji: '🏝️' },
+                        { en: 'ocean', cn: '海洋', emoji: '🌊' },
+                        { en: 'continent', cn: '大陆', emoji: '🌍' },
+                        { en: 'explore', cn: '探索', emoji: '🧭' }
+                    ],
+                    grammar: {
+                        rule: 'Comparatives & Superlatives - 比较级和最高级',
+                        example: 'Mount Everest is <em>higher than</em> Mount Fuji. / It is the <em>highest</em> mountain in the world.',
+                        focus: '形容词比较级和最高级的构成',
+                        exercises: [
+                            { q: 'The elephant is ___ than the mouse.', options: ['bigger', 'biggest', 'big'], answer: 0 },
+                            { q: 'This is the ___ river in the world.', options: ['long', 'longer', 'longest'], answer: 2 },
+                            { q: 'The Sahara is ___ than the Arctic.', options: ['hotter', 'hottest', 'hot'], answer: 0 }
+                        ]
+                    },
+                    dailyDays: [
+                        // Day 1
+                        {
+                            storybook: {
+                                title: 'Around the World',
+                                pages: [
+                                    { emoji: '🌍', text: 'Welcome to our <span class="highlight-word">amazing</span> world! There are many <span class="highlight-word">wonderful</span> places to explore.', cn: '欢迎来到我们神奇的世界！有很多奇妙的地方可以去探索。' },
+                                    { emoji: '⛰️', text: 'Mount Everest is the <span class="highlight-word">highest</span> mountain on Earth. It is <span class="highlight-word">higher than</span> any other mountain!', cn: '珠穆朗玛峰是地球上最高的山。它比任何其他山都高！' },
+                                    { emoji: '🌊', text: 'The Pacific Ocean is the <span class="highlight-word">largest</span> ocean. It is <span class="highlight-word">bigger than</span> all the continents!', cn: '太平洋是最大的海洋。它比所有大陆都大！' },
+                                    { emoji: '🏜️', text: 'The Sahara is the <span class="highlight-word">hottest</span> desert. But Antarctica is <span class="highlight-word">colder than</span> the Sahara!', cn: '撒哈拉是最热的沙漠。但南极洲比撒哈拉更冷！' }
+                                ],
+                                quiz: [
+                                    { q: 'What is the highest mountain?', options: ['Mount Fuji', 'Mount Everest', 'K2'], answer: 1 },
+                                    { q: 'Which is the largest ocean?', options: ['Atlantic', 'Indian', 'Pacific'], answer: 2 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Seven Wonders',
+                                text: 'The world has seven natural wonders. The Grand Canyon is deeper than any other canyon. The Great Barrier Reef is the largest coral reef. Victoria Falls is higher and wider than most waterfalls. Our world is truly amazing!',
+                                questions: [
+                                    { q: 'How many natural wonders are there?', options: ['Five', 'Seven', 'Ten'], answer: 1 },
+                                    { q: 'What is the largest coral reef?', options: ['Red Sea Reef', 'Great Barrier Reef', 'Belize Reef'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '描述你最喜欢的自然景观',
+                                messages: [{ speaker: 'ai', text: 'What is the most amazing place you have ever seen?', cn: '你见过最神奇的地方是哪里？' }],
+                                responses: [
+                                    { text: 'I saw the Grand Canyon! It was bigger than I imagined.', cn: '我看到了大峡谷！它比我想象的还要大。', correct: true, score: 10 },
+                                    { text: 'I like eating pizza.', cn: '我喜欢吃披萨。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        // Day 2
+                        {
+                            storybook: {
+                                title: 'The Little Explorer',
+                                pages: [
+                                    { emoji: '🧭', text: 'Leo is a little <span class="highlight-word">explorer</span>. Today he wants to find the <span class="highlight-word">biggest</span> tree in the forest.', cn: '里奥是个小探险家。今天他想找到森林里最大的树。' },
+                                    { emoji: '🌲', text: 'He walks <span class="highlight-word">farther than</span> ever before. He sees a <span class="highlight-word">taller</span> tree than his house!', cn: '他走得比以往都远。他看到了一棵比他的房子还高的树！' },
+                                    { emoji: '🐿️', text: 'A squirrel runs <span class="highlight-word">faster than</span> Leo. "Can you help me?" it asks. "I am the <span class="highlight-word">smallest</span> in my family."', cn: '一只松鼠跑得比里奥快。"你能帮我吗？"它问。"我是家里最小的。"' },
+                                    { emoji: '🌳', text: 'Leo finds the <span class="highlight-word">oldest</span> tree in the forest. It is the <span class="highlight-word">most beautiful</span> tree he has ever seen!', cn: '里奥找到了森林里最老的树。那是他见过的最美丽的树！' }
+                                ],
+                                quiz: [
+                                    { q: 'What does Leo want to find?', options: ['A river', 'The biggest tree', 'A mountain'], answer: 1 },
+                                    { q: 'Who asks Leo for help?', options: ['A bird', 'A squirrel', 'A rabbit'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'The Tallest Building',
+                                text: 'The Burj Khalifa in Dubai is the tallest building in the world. It is taller than 800 giraffes standing on top of each other! It has 163 floors. It is higher than the clouds on foggy days. People from all over the world come to see it.',
+                                questions: [
+                                    { q: 'Where is the tallest building?', options: ['New York', 'Dubai', 'London'], answer: 1 },
+                                    { q: 'How many floors does it have?', options: ['100', '163', '200'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '比较两种事物',
+                                messages: [{ speaker: 'ai', text: 'Which is bigger, the ocean or a lake?', cn: '海洋和湖泊哪个更大？' }],
+                                responses: [
+                                    { text: 'The ocean is bigger than any lake!', cn: '海洋比任何湖泊都大！', correct: true, score: 10 },
+                                    { text: 'I like swimming.', cn: '我喜欢游泳。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        // Day 3
+                        {
+                            storybook: {
+                                title: 'Two Islands',
+                                pages: [
+                                    { emoji: '🏝️', text: 'There are two <span class="highlight-word">islands</span> in the sea. One is <span class="highlight-word">larger</span> than the other.', cn: '海里有两座岛屿。一座比另一座更大。' },
+                                    { emoji: '🦜', text: 'The big island has <span class="highlight-word">more</span> birds. The small island has <span class="highlight-word">fewer</span> trees but <span class="highlight-word">cleaner</span> water.', cn: '大岛上有更多的鸟。小岛的树更少但水更干净。' },
+                                    { emoji: '⛵', text: 'A sailor visits both islands. "The small one is <span class="highlight-word">more peaceful</span>," he says.', cn: '一个水手参观了两个岛屿。"小的那个更宁静，"他说。' },
+                                    { emoji: '🌅', text: 'He decides to stay on the small island. It is the <span class="highlight-word">best</span> place he has ever found!', cn: '他决定留在小岛上。那是他找到的最好的地方！' }
+                                ],
+                                quiz: [
+                                    { q: 'Which island has more birds?', options: ['The small one', 'The big one', 'Neither'], answer: 1 },
+                                    { q: 'Where does the sailor stay?', options: ['The big island', 'The small island', 'His boat'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Animals Big and Small',
+                                text: 'The blue whale is the largest animal in the world. It is heavier than 30 elephants! But the smallest mammal is the bumblebee bat. It is lighter than a coin. Both animals are amazing in their own way.',
+                                questions: [
+                                    { q: 'What is the largest animal?', options: ['Elephant', 'Blue whale', 'Giraffe'], answer: 1 },
+                                    { q: 'What is the smallest mammal?', options: ['Mouse', 'Bumblebee bat', 'Ant'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '比较动物',
+                                messages: [{ speaker: 'ai', text: 'Which is faster, a cheetah or a turtle?', cn: '猎豹和乌龟哪个更快？' }],
+                                responses: [
+                                    { text: 'A cheetah is much faster than a turtle!', cn: '猎豹比乌龟快得多！', correct: true, score: 10 },
+                                    { text: 'I have a pet turtle.', cn: '我有一只宠物乌龟。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        // Day 4
+                        {
+                            storybook: {
+                                title: 'The Weather Race',
+                                pages: [
+                                    { emoji: '🌤️', text: 'Today is <span class="highlight-word">warmer</span> than yesterday. The sun is <span class="highlight-word">brighter</span> too!', cn: '今天比昨天更暖和。太阳也更亮了！' },
+                                    { emoji: '🌧️', text: 'But tomorrow will be <span class="highlight-word">wetter</span>. "It will be the <span class="highlight-word">rainiest</span> day this week," says the weather report.', cn: '但明天会更潮湿。"这会是本周降雨最多的一天，"天气预报说。' },
+                                    { emoji: '❄️', text: 'Last week was the <span class="highlight-word">coldest</span> day of the year. Today is <span class="highlight-word">nicer</span> than last week!', cn: '上周是今年最冷的一天。今天比上周好多了！' },
+                                    { emoji: '🌈', text: 'After the rain, a rainbow appears. It is the <span class="highlight-word">most beautiful</span> thing in the sky!', cn: '雨后出现了彩虹。那是天空中最美的东西！' }
+                                ],
+                                quiz: [
+                                    { q: 'What day was the coldest?', options: ['Today', 'Tomorrow', 'Last week'], answer: 2 },
+                                    { q: 'What appears after the rain?', options: ['Snow', 'A rainbow', 'Fog'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Hottest and Coldest Places',
+                                text: 'Death Valley in America is one of the hottest places on Earth. In summer, it is hotter than an oven! But Antarctica is the coldest place. It is colder than any freezer. Both places are very different but equally interesting.',
+                                questions: [
+                                    { q: 'Where is one of the hottest places?', options: ['Antarctica', 'Death Valley', 'London'], answer: 1 },
+                                    { q: 'What is the coldest place?', options: ['Africa', 'Antarctica', 'Australia'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '描述天气',
+                                messages: [{ speaker: 'ai', text: 'What is the weather like today?', cn: '今天天气怎么样？' }],
+                                responses: [
+                                    { text: 'It is warmer than yesterday and the sun is brighter!', cn: '比昨天暖和，太阳也更亮了！', correct: true, score: 10 },
+                                    { text: 'I like watching TV.', cn: '我喜欢看电视。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        // Day 5
+                        {
+                            storybook: {
+                                title: 'The Best Friend',
+                                pages: [
+                                    { emoji: '👦', text: 'Sam has two friends. Tom is <span class="highlight-word">taller</span> and Ben is <span class="highlight-word">funnier</span>.', cn: '山姆有两个朋友。汤姆更高，本更有趣。' },
+                                    { emoji: '🎮', text: 'Tom is <span class="highlight-word">better at</span> games. But Ben is <span class="highlight-word">kinder</span> and more <span class="highlight-word">helpful</span>.', cn: '汤姆更擅长游戏。但本更善良，更乐于助人。' },
+                                    { emoji: '🤔', text: '"Who is the <span class="highlight-word">best</span> friend?" Sam thinks. "They are both <span class="highlight-word">more special</span> than anyone else."', cn: '"谁是最好的朋友？"山姆想。"他们俩都比其他人更特别。"' },
+                                    { emoji: '💕', text: '"The <span class="highlight-word">best</span> friend is the one who makes you happy," says Mum. "And both of them do!"', cn: '"最好的朋友是让你快乐的人，"妈妈说。"他们俩都做到了！"' }
+                                ],
+                                quiz: [
+                                    { q: 'Who is taller?', options: ['Sam', 'Tom', 'Ben'], answer: 1 },
+                                    { q: 'Who is kinder?', options: ['Tom', 'Ben', 'Sam'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'What Makes a Good Friend?',
+                                text: 'A good friend is more important than money. A true friend is kinder than anyone else. They are better listeners than most people. The best friends are the ones who stay with you when you need help most.',
+                                questions: [
+                                    { q: 'What is more important than money?', options: ['A car', 'A good friend', 'A big house'], answer: 1 },
+                                    { q: 'When do best friends stay with you?', options: ['When you are rich', 'When you need help', 'When it is sunny'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '描述你的朋友',
+                                messages: [{ speaker: 'ai', text: 'Who is your best friend? What are they like?', cn: '谁是你最好的朋友？他们是什么样的？' }],
+                                responses: [
+                                    { text: 'My best friend is kinder than anyone I know. She is the most helpful person!', cn: '我最好的朋友比任何人都善良。她是最乐于助人的人！', correct: true, score: 10 },
+                                    { text: 'I have a dog.', cn: '我有一只狗。', correct: false, score: 3 }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: 'Healthy Life',
+                    topic: '健康生活方式',
+                    vocab: [
+                        { en: 'exercise', cn: '锻炼', emoji: '🏃' },
+                        { en: 'nutrition', cn: '营养', emoji: '🥗' },
+                        { en: 'vitamin', cn: '维生素', emoji: '💊' },
+                        { en: 'balanced', cn: '均衡的', emoji: '⚖️' },
+                        { en: 'energy', cn: '能量', emoji: '⚡' },
+                        { en: 'hygiene', cn: '卫生', emoji: '🧼' },
+                        { en: 'rest', cn: '休息', emoji: '😴' },
+                        { en: 'habit', cn: '习惯', emoji: '📋' }
+                    ],
+                    grammar: {
+                        rule: 'Should / Shouldn\'t - 建议与义务',
+                        example: 'You <em>should</em> eat more vegetables. / You <em>shouldn\'t</em> eat too much sugar.',
+                        focus: 'should 表示建议',
+                        exercises: [
+                            { q: 'You ___ brush your teeth twice a day.', options: ['should', 'shouldn\'t', 'can'], answer: 0 },
+                            { q: 'We ___ eat too much candy.', options: ['should', 'shouldn\'t', 'must'], answer: 1 },
+                            { q: 'Children ___ sleep 9-11 hours.', options: ['should', 'shouldn\'t', 'can\'t'], answer: 0 }
+                        ]
+                    },
+                    dailyDays: [
+                        {
+                            storybook: {
+                                title: 'Tom\'s Healthy Day',
+                                pages: [
+                                    { emoji: '🌅', text: 'Tom wakes up at 7 o\'clock. He <span class="highlight-word">should</span> start the day with a <span class="highlight-word">good breakfast</span>.', cn: '汤姆七点醒来。他应该以一顿丰盛的早餐开始新的一天。' },
+                                    { emoji: '🏃', text: 'After breakfast, Tom goes for a <span class="highlight-word">run</span>. Exercise makes him <span class="highlight-word">strong</span> and gives him <span class="highlight-word">energy</span>.', cn: '早餐后，汤姆去跑步。锻炼让他强壮，给他能量。' },
+                                    { emoji: '🥗', text: 'For lunch, Tom eats lots of <span class="highlight-word">vegetables</span> and <span class="highlight-word">fruit</span>. "You should eat a balanced diet," says Mum.', cn: '午餐，汤姆吃很多蔬菜和水果。"你应该均衡饮食，"妈妈说。' },
+                                    { emoji: '😴', text: 'At night, Tom <span class="highlight-word">shouldn\'t</span> play games too late. He needs to <span class="highlight-word">rest</span> well. Good sleep is a healthy <span class="highlight-word">habit</span>!', cn: '晚上，汤姆不应该玩游戏太晚。他需要好好休息。良好的睡眠是健康的习惯！' }
+                                ],
+                                quiz: [
+                                    { q: 'What does Tom do after breakfast?', options: ['Play games', 'Go for a run', 'Watch TV'], answer: 1 },
+                                    { q: 'What shouldn\'t Tom do at night?', options: ['Read books', 'Play games too late', 'Eat fruit'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'How to Stay Healthy',
+                                text: 'To stay healthy, you should exercise every day. You should eat fruits and vegetables. You shouldn\'t drink too much soda. You should drink plenty of water. Good habits make you strong!',
+                                questions: [
+                                    { q: 'What should you drink?', options: ['Soda', 'Water', 'Juice only'], answer: 1 },
+                                    { q: 'How often should you exercise?', options: ['Once a week', 'Every day', 'Never'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论健康习惯',
+                                messages: [{ speaker: 'ai', text: 'What healthy habits do you have?', cn: '你有什么健康习惯？' }],
+                                responses: [
+                                    { text: 'I exercise every day and eat lots of vegetables.', cn: '我每天锻炼，吃很多蔬菜。', correct: true, score: 10 },
+                                    { text: 'I play video games all day.', cn: '我一整天玩电子游戏。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'Lily\'s Sick Day',
+                                pages: [
+                                    { emoji: '🤒', text: 'Lily wakes up feeling <span class="highlight-word">sick</span>. "You should stay in bed," says Mum.', cn: '莉莉醒来感觉不舒服。"你应该待在床上，"妈妈说。' },
+                                    { emoji: '💊', text: '"You <span class="highlight-word">should</span> take this medicine. And you <span class="highlight-word">shouldn\'t</span> go to school today."', cn: '"你应该吃这个药。今天不应该去上学。"' },
+                                    { emoji: '🍲', text: 'Mum makes <span class="highlight-word">soup</span> for Lily. "You should eat something warm," she says.', cn: '妈妈给莉莉做了汤。"你应该吃点热的，"她说。' },
+                                    { emoji: '😊', text: 'By evening, Lily feels <span class="highlight-word">better</span>. "I should always wash my hands," she says.', cn: '到了晚上，莉莉感觉好多了。"我应该一直洗手，"她说。' }
+                                ],
+                                quiz: [
+                                    { q: 'Why does Lily stay in bed?', options: ['She is tired', 'She is sick', 'She is lazy'], answer: 1 },
+                                    { q: 'What does Mum make for Lily?', options: ['Pizza', 'Soup', 'Salad'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Wash Your Hands',
+                                text: 'You should wash your hands before meals. You should wash them after using the toilet. You shouldn\'t touch your face with dirty hands. Washing hands is the easiest way to stay healthy!',
+                                questions: [
+                                    { q: 'When should you wash hands?', options: ['Only at night', 'Before meals', 'Never'], answer: 1 },
+                                    { q: 'What shouldn\'t you do with dirty hands?', options: ['Wash dishes', 'Touch your face', 'Play outside'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '给生病的朋友建议',
+                                messages: [{ speaker: 'ai', text: 'I have a cold. What should I do?', cn: '我感冒了。我该怎么办？' }],
+                                responses: [
+                                    { text: 'You should rest and drink warm water. You shouldn\'t go out in the cold.', cn: '你应该休息，喝温水。不应该在冷天出门。', correct: true, score: 10 },
+                                    { text: 'You should eat candy.', cn: '你应该吃糖果。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Food Game',
+                                pages: [
+                                    { emoji: '🎮', text: 'The teacher plays a <span class="highlight-word">game</span> with the class. "Which food is healthier?" she asks.', cn: '老师和全班同学玩一个游戏。"哪种食物更健康？"她问。' },
+                                    { emoji: '🍎', text: '"An apple or a candy?" "Apple!" the class shouts. "Yes, you should eat more fruit!"', cn: '"苹果还是糖果？""苹果！"全班喊道。"对，你们应该多吃水果！"' },
+                                    { emoji: '🥤', text: '"Water or soda?" "Water!" "Correct! You <span class="highlight-word">shouldn\'t</span> drink too much sugar."', cn: '"水还是汽水？""水！""正确！你们不应该喝太多糖。"' },
+                                    { emoji: '🏆', text: 'The class wins the game. "We should eat well every day!" they say happily.', cn: '全班赢了游戏。"我们应该每天吃得好！"他们高兴地说。' }
+                                ],
+                                quiz: [
+                                    { q: 'Which is healthier?', options: ['Candy', 'Apple', 'Chips'], answer: 1 },
+                                    { q: 'What shouldn\'t you drink too much of?', options: ['Water', 'Milk', 'Soda'], answer: 2 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Breakfast is Important',
+                                text: 'You should never skip breakfast. It gives you energy for the whole morning. You should eat eggs, bread, and milk. You shouldn\'t just eat candy or chips. A good breakfast helps you do better at school!',
+                                questions: [
+                                    { q: 'Why is breakfast important?', options: ['It makes you fat', 'It gives you energy', 'It is fun'], answer: 1 },
+                                    { q: 'What shouldn\'t you eat for breakfast?', options: ['Eggs', 'Candy or chips', 'Bread'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论早餐',
+                                messages: [{ speaker: 'ai', text: 'What do you usually eat for breakfast?', cn: '你早餐通常吃什么？' }],
+                                responses: [
+                                    { text: 'I have eggs, bread and milk. My mum says I should eat well!', cn: '我吃鸡蛋、面包和牛奶。妈妈说我应该吃得好！', correct: true, score: 10 },
+                                    { text: 'I don\'t eat breakfast.', cn: '我不吃早餐。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'Sports Day',
+                                pages: [
+                                    { emoji: '🏫', text: 'Today is <span class="highlight-word">Sports Day</span> at school. Everyone should try their best!', cn: '今天是学校的运动会。每个人都应该尽力而为！' },
+                                    { emoji: '🏃', text: '"You should warm up before running," says the teacher. "You shouldn\'t start too fast."', cn: '"跑步前你应该热身，"老师说。"你不应该一开始就跑太快。"' },
+                                    { emoji: '💧', text: 'After running, everyone <span class="highlight-word">drinks water</span>. "You should drink when you exercise," says the nurse.', cn: '跑步后，每个人都喝水。"锻炼时你应该喝水，"护士说。' },
+                                    { emoji: '🎉', text: 'Class 3 wins! "We should celebrate!" says the teacher. "But we shouldn\'t eat too much cake!"', cn: '三班赢了！"我们应该庆祝！"老师说。"但我们不应该吃太多蛋糕！"' }
+                                ],
+                                quiz: [
+                                    { q: 'What should you do before running?', options: ['Eat cake', 'Warm up', 'Sleep'], answer: 1 },
+                                    { q: 'Who wins Sports Day?', options: ['Class 1', 'Class 2', 'Class 3'], answer: 2 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Why Exercise Matters',
+                                text: 'Exercise keeps you healthy and strong. You should exercise for at least 30 minutes every day. Running, swimming, and cycling are all good exercise. You shouldn\'t sit and watch TV all day. Move your body!',
+                                questions: [
+                                    { q: 'How long should you exercise daily?', options: ['5 minutes', '30 minutes', '2 hours'], answer: 1 },
+                                    { q: 'What shouldn\'t you do all day?', options: ['Read books', 'Watch TV', 'Play outside'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论运动',
+                                messages: [{ speaker: 'ai', text: 'What sports do you like?', cn: '你喜欢什么运动？' }],
+                                responses: [
+                                    { text: 'I like running and swimming. My teacher says I should warm up first.', cn: '我喜欢跑步和游泳。老师说我应该先热身。', correct: true, score: 10 },
+                                    { text: 'I like sleeping all day.', cn: '我喜欢整天睡觉。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Sleepy King',
+                                pages: [
+                                    { emoji: '👑', text: 'Once there was a king who <span class="highlight-word">never slept</span> enough. He always worked late.', cn: '从前有个国王从不睡够。他总是工作到很晚。' },
+                                    { emoji: '😴', text: 'His doctor said, "You <span class="highlight-word">should</span> sleep 8 hours. You shouldn\'t work all night!"', cn: '他的医生说："你应该睡8小时。不应该整夜工作！"' },
+                                    { emoji: '🌙', text: 'The king tries to sleep early. He <span class="highlight-word">shouldn\'t</span> drink tea at night.', cn: '国王试着早睡。他不应该在晚上喝茶。' },
+                                    { emoji: '☀️', text: 'The next morning, the king wakes up <span class="highlight-word">fresh</span>. "I should always rest well!" he says.', cn: '第二天早上，国王神清气爽地醒来。"我应该一直好好休息！"他说。' }
+                                ],
+                                quiz: [
+                                    { q: 'What does the doctor say?', options: ['Work more', 'Sleep 8 hours', 'Drink tea'], answer: 1 },
+                                    { q: 'How does the king feel the next morning?', options: ['Tired', 'Fresh', 'Sick'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Good Sleep Habits',
+                                text: 'Children should sleep 9-11 hours every night. You should go to bed at the same time each day. You shouldn\'t use phones before bed. Good sleep helps you grow tall and do better at school!',
+                                questions: [
+                                    { q: 'How many hours should children sleep?', options: ['5-6 hours', '9-11 hours', '15 hours'], answer: 1 },
+                                    { q: 'What shouldn\'t you do before bed?', options: ['Read a book', 'Use phones', 'Brush teeth'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论睡眠',
+                                messages: [{ speaker: 'ai', text: 'What time do you go to bed?', cn: '你几点睡觉？' }],
+                                responses: [
+                                    { text: 'I go to bed at 9 o\'clock. My mum says I should sleep early.', cn: '我九点睡觉。妈妈说我应该早睡。', correct: true, score: 10 },
+                                    { text: 'I play games all night.', cn: '我整夜玩游戏。', correct: false, score: 3 }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: 'Stories We Love',
+                    topic: '经典故事',
+                    vocab: [
+                        { en: 'character', cn: '角色', emoji: '🎭' },
+                        { en: 'plot', cn: '情节', emoji: '📖' },
+                        { en: 'adventure', cn: '冒险', emoji: '🗺️' },
+                        { en: 'magic', cn: '魔法', emoji: '✨' },
+                        { en: 'hero', cn: '英雄', emoji: '🦸' },
+                        { en: 'villain', cn: '反派', emoji: '😈' },
+                        { en: 'journey', cn: '旅程', emoji: '🚶' },
+                        { en: 'treasure', cn: '宝藏', emoji: '💎' }
+                    ],
+                    grammar: {
+                        rule: 'Past Simple - 一般过去时',
+                        example: 'The hero <em>found</em> the treasure. / They <em>went</em> on a long journey.',
+                        focus: '规则和不规则动词的过去式',
+                        exercises: [
+                            { q: 'Yesterday, I ___ to the park.', options: ['go', 'went', 'going'], answer: 1 },
+                            { q: 'She ___ a beautiful song.', options: ['sing', 'sang', 'singing'], answer: 1 },
+                            { q: 'They ___ the treasure map.', options: ['find', 'finded', 'found'], answer: 2 }
+                        ]
+                    },
+                    dailyDays: [
+                        {
+                            storybook: {
+                                title: 'The Magic Tree',
+                                pages: [
+                                    { emoji: '🌳', text: 'Once upon a time, there <span class="highlight-word">was</span> a magic tree in the forest. It <span class="highlight-word">grew</span> golden apples!', cn: '从前，森林里有一棵魔法树。它结出了金色的苹果！' },
+                                    { emoji: '👧', text: 'A little girl <span class="highlight-word">discovered</span> the tree. She <span class="highlight-word">picked</span> an apple and took it home.', cn: '一个小女孩发现了这棵树。她摘了一个苹果带回家。' },
+                                    { emoji: '😈', text: 'A wicked witch <span class="highlight-word">wanted</span> the tree. She <span class="highlight-word">tried</span> to cut it down!', cn: '一个邪恶的女巫想要这棵树。她试图砍倒它！' },
+                                    { emoji: '✨', text: 'But the tree <span class="highlight-word">protected</span> itself. The witch <span class="highlight-word">ran</span> away, and the girl <span class="highlight-word">saved</span> the tree!', cn: '但是树保护了自己。女巫逃跑了，女孩救了树！' }
+                                ],
+                                quiz: [
+                                    { q: 'What did the tree grow?', options: ['Silver apples', 'Golden apples', 'Red apples'], answer: 1 },
+                                    { q: 'Who saved the tree?', options: ['The witch', 'The girl', 'The farmer'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'The Tortoise and the Hare',
+                                text: 'One day, a hare laughed at a tortoise. "I am faster than you!" he said. They had a race. The hare ran fast but stopped to sleep. The tortoise walked slowly but never stopped. The tortoise won the race!',
+                                questions: [
+                                    { q: 'Who won the race?', options: ['The hare', 'The tortoise', 'Nobody'], answer: 1 },
+                                    { q: 'Why did the hare lose?', options: ['He was slow', 'He stopped to sleep', 'He was sick'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讲述一个你喜欢的故事',
+                                messages: [{ speaker: 'ai', text: 'Can you tell me a story you like?', cn: '你能给我讲一个你喜欢的故事吗？' }],
+                                responses: [
+                                    { text: 'I like Cinderella. She was kind and found happiness.', cn: '我喜欢灰姑娘。她很善良，找到了幸福。', correct: true, score: 10 },
+                                    { text: 'I like pizza.', cn: '我喜欢披萨。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Brave Little Bird',
+                                pages: [
+                                    { emoji: '🐦', text: 'A little bird <span class="highlight-word">fell</span> from her nest. She <span class="highlight-word">could not</span> fly back up.', cn: '一只小鸟从巢里掉了下来。她飞不回去。' },
+                                    { emoji: '🐿️', text: 'A squirrel <span class="highlight-word">found</span> her. "Don\'t worry," he said. "I <span class="highlight-word">helped</span> many animals before."', cn: '一只松鼠发现了她。"别担心，"他说。"我以前帮助过很多动物。"' },
+                                    { emoji: '🌲', text: 'The squirrel <span class="highlight-word">climbed</span> the tree and <span class="highlight-word">put</span> the bird back in her nest.', cn: '松鼠爬上树，把小鸟放回了巢里。' },
+                                    { emoji: '🎵', text: 'The mother bird <span class="highlight-word">sang</span> a happy song. "Thank you!" she said. The squirrel <span class="highlight-word">smiled</span>.', cn: '鸟妈妈唱了一首快乐的歌。"谢谢！"她说。松鼠笑了。' }
+                                ],
+                                quiz: [
+                                    { q: 'What happened to the bird?', options: ['She flew away', 'She fell from her nest', 'She was hungry'], answer: 1 },
+                                    { q: 'Who helped the bird?', options: ['A cat', 'A squirrel', 'A dog'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'The Lion and the Mouse',
+                                text: 'A mouse woke up a sleeping lion. The lion caught the mouse but let him go. Later, the lion was caught in a net. The mouse chewed the net and freed the lion. Even small friends can be great helpers!',
+                                questions: [
+                                    { q: 'What did the lion do first?', options: ['Ate the mouse', 'Let the mouse go', 'Ran away'], answer: 1 },
+                                    { q: 'How did the mouse help the lion?', options: ['Roared loudly', 'Chewed the net', 'Called friends'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讲一个帮助别人的故事',
+                                messages: [{ speaker: 'ai', text: 'Have you ever helped someone? Tell me about it.', cn: '你帮助过别人吗？给我讲讲。' }],
+                                responses: [
+                                    { text: 'Yes! I helped my classmate find his book yesterday.', cn: '是的！昨天我帮同学找到了他的书。', correct: true, score: 10 },
+                                    { text: 'I never help anyone.', cn: '我从不帮助别人。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Pirate\'s Map',
+                                pages: [
+                                    { emoji: '🗺️', text: 'Captain Jack <span class="highlight-word">found</span> an old map in a bottle. It <span class="highlight-word">showed</span> the way to treasure!', cn: '杰克船长在一个瓶子里发现了一张旧地图。它指明了宝藏的路！' },
+                                    { emoji: '⛵', text: 'He <span class="highlight-word">sailed</span> across the sea. He <span class="highlight-word">passed</span> many islands on the way.', cn: '他航行穿越大海。一路上经过了很多岛屿。' },
+                                    { emoji: '🏴‍☠️', text: 'Another pirate <span class="highlight-word">tried</span> to steal the map. But Jack <span class="highlight-word">hid</span> it safely.', cn: '另一个海盗试图偷走地图。但杰克把它安全地藏了起来。' },
+                                    { emoji: '💎', text: 'Jack <span class="highlight-word">found</span> the treasure! He <span class="highlight-word">shared</span> it with his crew. They all celebrated!', cn: '杰克找到了宝藏！他和船员们分享了。他们都庆祝了！' }
+                                ],
+                                quiz: [
+                                    { q: 'Where did Jack find the map?', options: ['In a box', 'In a bottle', 'Under a tree'], answer: 1 },
+                                    { q: 'What did Jack do with the treasure?', options: ['Kept it all', 'Shared it', 'Lost it'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'A Real Treasure Hunt',
+                                text: 'Last summer, I went on a treasure hunt with my friends. We followed a map through the park. We looked under rocks and behind trees. Finally, we found a box with chocolates inside. It was the best day ever!',
+                                questions: [
+                                    { q: 'When did the treasure hunt happen?', options: ['Last winter', 'Last summer', 'Yesterday'], answer: 1 },
+                                    { q: 'What was in the treasure box?', options: ['Gold', 'Chocolates', 'Toys'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '想象一个冒险故事',
+                                messages: [{ speaker: 'ai', text: 'If you found a treasure map, what would you do?', cn: '如果你发现了一张藏宝图，你会怎么做？' }],
+                                responses: [
+                                    { text: 'I would follow the map and find the treasure with my friends!', cn: '我会跟着地图，和朋友们一起找到宝藏！', correct: true, score: 10 },
+                                    { text: 'I would throw it away.', cn: '我会把它扔掉。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Dragon\'s Egg',
+                                pages: [
+                                    { emoji: '🥚', text: 'A boy <span class="highlight-word">discovered</span> a big egg in a cave. It <span class="highlight-word">was</span> warm and shiny.', cn: '一个男孩在山洞里发现了一个大蛋。它又暖又亮。' },
+                                    { emoji: '🔥', text: 'He <span class="highlight-word">took</span> it home. The next morning, it <span class="highlight-word">cracked</span> open. A baby dragon <span class="highlight-word">came</span> out!', cn: '他把它带回家。第二天早上，它裂开了。一条小龙出来了！' },
+                                    { emoji: '🐉', text: 'The dragon <span class="highlight-word">breathed</span> little fire. It <span class="highlight-word">burned</span> a hole in the carpet!', cn: '小龙喷出了小火。它在地毯上烧了个洞！' },
+                                    { emoji: '❤️', text: 'The boy <span class="highlight-word">named</span> the dragon Sparky. They <span class="highlight-word">became</span> best friends and had many adventures!', cn: '男孩给龙取名叫斯帕基。他们成了最好的朋友，经历了很多冒险！' }
+                                ],
+                                quiz: [
+                                    { q: 'Where did the boy find the egg?', options: ['In a nest', 'In a cave', 'In a river'], answer: 1 },
+                                    { q: 'What did the dragon burn?', options: ['A book', 'The carpet', 'The table'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'The Boy Who Drew Cats',
+                                text: 'A long time ago, a boy loved drawing cats. His teacher told him to go to a big temple. At night, he saw a monster in the temple. He quickly drew cats on the walls. In the morning, the monster was gone. The painted cats saved him!',
+                                questions: [
+                                    { q: 'What did the boy love doing?', options: ['Singing', 'Drawing cats', 'Dancing'], answer: 1 },
+                                    { q: 'Where did the teacher tell him to go?', options: ['Home', 'A big temple', 'The market'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '想象遇到一只龙',
+                                messages: [{ speaker: 'ai', text: 'What would you name a baby dragon?', cn: '你会给小龙取什么名字？' }],
+                                responses: [
+                                    { text: 'I would name it Sparky! We would go on adventures together.', cn: '我会叫它斯帕基！我们会一起去冒险。', correct: true, score: 10 },
+                                    { text: 'I don\'t like dragons.', cn: '我不喜欢龙。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Enchanted Book',
+                                pages: [
+                                    { emoji: '📚', text: 'Mia <span class="highlight-word">opened</span> an old book in the library. Suddenly, she <span class="highlight-word">jumped</span> into the story!', cn: '米娅在图书馆翻开了一本旧书。突然，她跳进了故事里！' },
+                                    { emoji: '👸', text: 'She <span class="highlight-word">met</span> a princess who <span class="highlight-word">lost</span> her crown. "Can you help me?" the princess asked.', cn: '她遇到了一个丢了皇冠的公主。"你能帮我吗？"公主问。' },
+                                    { emoji: '🔍', text: 'Mia <span class="highlight-word">searched</span> the castle. She <span class="highlight-word">found</span> the crown under a pillow.', cn: '米娅搜索了城堡。她在枕头下找到了皇冠。' },
+                                    { emoji: '📖', text: 'The princess <span class="highlight-word">thanked</span> her. Then Mia <span class="highlight-word">woke</span> up back in the library. What an adventure!', cn: '公主感谢了她。然后米娅回到了图书馆。多棒的冒险！' }
+                                ],
+                                quiz: [
+                                    { q: 'Where did Mia go?', options: ['To school', 'Into a book', 'To the park'], answer: 1 },
+                                    { q: 'What did the princess lose?', options: ['A shoe', 'Her crown', 'A ring'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'My Favorite Book',
+                                text: 'Yesterday, I read a wonderful book called "The Magic Key." A girl found a golden key in her garden. It opened a door to a magical world. She met talking animals and visited castles. I loved this story so much!',
+                                questions: [
+                                    { q: 'What did the girl find?', options: ['A book', 'A golden key', 'A crown'], answer: 1 },
+                                    { q: 'What did the key open?', options: ['A door to a magical world', 'A treasure box', 'A car'], answer: 0 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '推荐一本书',
+                                messages: [{ speaker: 'ai', text: 'What is your favorite book?', cn: '你最喜欢的书是什么？' }],
+                                responses: [
+                                    { text: 'I love Harry Potter. It is about magic and friendship!', cn: '我喜欢哈利波特。它是关于魔法和友谊的！', correct: true, score: 10 },
+                                    { text: 'I don\'t read books.', cn: '我不读书。', correct: false, score: 3 }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    title: 'City Living',
+                    topic: '城市生活',
+                    vocab: [
+                        { en: 'downtown', cn: '市中心', emoji: '🏙️' },
+                        { en: 'subway', cn: '地铁', emoji: '🚇' },
+                        { en: 'apartment', cn: '公寓', emoji: '🏢' },
+                        { en: 'traffic', cn: '交通', emoji: '🚗' },
+                        { en: 'neighbourhood', cn: '街区', emoji: '🏘️' },
+                        { en: 'market', cn: '市场', emoji: '🏪' },
+                        { en: 'square', cn: '广场', emoji: '🏛️' },
+                        { en: 'crosswalk', cn: '人行横道', emoji: '🚶' }
+                    ],
+                    grammar: {
+                        rule: 'Prepositions of Place - 方位介词',
+                        example: 'The bank is <em>between</em> the school and the park. / Go <em>past</em> the library.',
+                        focus: 'between, next to, opposite, past, through',
+                        exercises: [
+                            { q: 'The shop is ___ the school and the hospital.', options: ['between', 'next', 'past'], answer: 0 },
+                            { q: 'Go ___ the bridge and turn left.', options: ['between', 'over', 'at'], answer: 1 },
+                            { q: 'The park is ___ to the cinema.', options: ['between', 'opposite', 'next'], answer: 2 }
+                        ]
+                    },
+                    dailyDays: [
+                        {
+                            storybook: {
+                                title: 'Lost in the City',
+                                pages: [
+                                    { emoji: '🏙️', text: 'Lily is new in the city. She wants to go to the <span class="highlight-word">market</span>, but she doesn\'t know the way.', cn: '莉莉是新来到城市的。她想去市场，但她不知道路。' },
+                                    { emoji: '👮', text: 'She asks a policeman. "Go <span class="highlight-word">past</span> the bank, then turn <span class="highlight-word">left</span>," he says.', cn: '她问一个警察。"经过银行，然后左转，"他说。' },
+                                    { emoji: '🌳', text: 'Lily walks <span class="highlight-word">through</span> a small park. The market is <span class="highlight-word">opposite</span> the park!', cn: '莉莉穿过一个小公园。市场就在公园对面！' },
+                                    { emoji: '🛍️', text: '"Thank you!" says Lily. The market is <span class="highlight-word">between</span> a bakery and a bookshop. What a great <span class="highlight-word">neighbourhood</span>!', cn: '"谢谢！"莉莉说。市场在一家面包店和一家书店之间。多好的街区啊！' }
+                                ],
+                                quiz: [
+                                    { q: 'Who does Lily ask for help?', options: ['A teacher', 'A policeman', 'A shopkeeper'], answer: 1 },
+                                    { q: 'Where is the market?', options: ['Next to the bank', 'Opposite the park', 'Behind the school'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'My City',
+                                text: 'I live in a big city. There is a subway station next to my apartment. The market is between my school and the park. I go past the library every day. I love my city!',
+                                questions: [
+                                    { q: 'What is next to the apartment?', options: ['A school', 'A subway station', 'A park'], answer: 1 },
+                                    { q: 'Where is the market?', options: ['Next to the library', 'Between school and park', 'Opposite the bank'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '问路指路',
+                                messages: [{ speaker: 'ai', text: 'Excuse me, how do I get to the library?', cn: '打扰一下，去图书馆怎么走？' }],
+                                responses: [
+                                    { text: 'Go straight, then turn left at the crosswalk. It\'s next to the park.', cn: '直走，然后在人行横道左转。它就在公园旁边。', correct: true, score: 10 },
+                                    { text: 'I like reading books.', cn: '我喜欢读书。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'A Day Downtown',
+                                pages: [
+                                    { emoji: '🏛️', text: 'Today, Dad takes Mia <span class="highlight-word">downtown</span>. "There is a museum <span class="highlight-word">in the center</span> of the city," he says.', cn: '今天，爸爸带米娅去市中心。"市中心有个博物馆，"他说。' },
+                                    { emoji: '🚇', text: 'They take the subway. The station is <span class="highlight-word">opposite</span> their apartment building.', cn: '他们坐地铁。车站在他们公寓楼对面。' },
+                                    { emoji: '🎨', text: 'At the museum, they walk <span class="highlight-word">through</span> many rooms. The paintings are <span class="highlight-word">between</span> tall windows.', cn: '在博物馆里，他们穿过很多房间。画在高大的窗户之间。' },
+                                    { emoji: '🍕', text: 'After the museum, they eat at a restaurant <span class="highlight-word">next to</span> a big square. "What a fun day!" says Mia.', cn: '参观完博物馆后，他们在大广场旁边的餐厅吃饭。"多开心的一天！"米娅说。' }
+                                ],
+                                quiz: [
+                                    { q: 'Where is the subway station?', options: ['Next to school', 'Opposite their apartment', 'Behind the museum'], answer: 1 },
+                                    { q: 'Where do they eat after the museum?', options: ['At home', 'Next to a big square', 'In the subway'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'The City Map',
+                                text: 'Look at this city map. The hospital is between the school and the bank. The post office is next to the supermarket. The cinema is across from the park. Can you find the library? It is past the church on Main Street!',
+                                questions: [
+                                    { q: 'Where is the hospital?', options: ['Next to the park', 'Between school and bank', 'Across from the bank'], answer: 1 },
+                                    { q: 'Where is the library?', options: ['Past the church on Main Street', 'Next to the hospital', 'Behind the school'], answer: 0 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '描述你居住的地方',
+                                messages: [{ speaker: 'ai', text: 'What is near your home?', cn: '你家附近有什么？' }],
+                                responses: [
+                                    { text: 'There is a park next to my home and a supermarket between my school and home.', cn: '我家旁边有个公园，学校和家之间有个超市。', correct: true, score: 10 },
+                                    { text: 'I live on the moon.', cn: '我住在月球上。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Busy Street',
+                                pages: [
+                                    { emoji: '🚗', text: 'Main Street is the <span class="highlight-word">busiest</span> street in town. Cars drive <span class="highlight-word">past</span> all day.', cn: '主街是镇上最繁忙的街道。汽车整天从旁边驶过。' },
+                                    { emoji: '🚶', text: 'People walk <span class="highlight-word">through</span> the crosswalk. They stop <span class="highlight-word">at</span> the traffic light.', cn: '人们穿过人行横道。他们在红绿灯前停下。' },
+                                    { emoji: '🏪', text: 'There is a fruit shop <span class="highlight-word">between</span> the bakery and the post office.', cn: '在面包店和邮局之间有一家水果店。' },
+                                    { emoji: '☕', text: '<span class="highlight-word">Opposite</span> the shop, there is a small cafe. "Let\'s rest," says Mum.', cn: '在商店对面，有一家小咖啡馆。"我们休息一下吧，"妈妈说。' }
+                                ],
+                                quiz: [
+                                    { q: 'What is between the bakery and post office?', options: ['A cafe', 'A fruit shop', 'A bank'], answer: 1 },
+                                    { q: 'Where is the cafe?', options: ['Next to the bakery', 'Opposite the shop', 'Behind the post office'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Traffic Safety',
+                                text: 'When you walk in the city, you should be careful. Walk through the crosswalk, not between cars. Stop at the red light. Look both ways before crossing. The subway station is under the ground. Be safe!',
+                                questions: [
+                                    { q: 'Where should you cross the road?', options: ['Between cars', 'Through the crosswalk', 'Anywhere'], answer: 1 },
+                                    { q: 'Where is the subway station?', options: ['On the ground', 'Under the ground', 'On the roof'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论交通安全',
+                                messages: [{ speaker: 'ai', text: 'How do you go to school?', cn: '你怎么去上学？' }],
+                                responses: [
+                                    { text: 'I walk through the crosswalk and past the park. I always look both ways!', cn: '我穿过人行横道，经过公园。我总是两边看！', correct: true, score: 10 },
+                                    { text: 'I fly to school.', cn: '我飞去上学。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'Moving Day',
+                                pages: [
+                                    { emoji: '📦', text: 'Today, the Chen family <span class="highlight-word">moves</span> to a new apartment. The boxes are <span class="highlight-word">on</span> the truck.', cn: '今天，陈家搬到了新公寓。箱子在卡车上。' },
+                                    { emoji: '🏢', text: 'The new apartment is <span class="highlight-word">between</span> a school and a park. "It\'s perfect!" says Dad.', cn: '新公寓在学校和公园之间。"太完美了！"爸爸说。' },
+                                    { emoji: '🛒', text: 'There is a supermarket <span class="highlight-word">next to</span> the building. Mum is very happy.', cn: '大楼旁边有一家超市。妈妈很高兴。' },
+                                    { emoji: '🎈', text: 'The neighbours come <span class="highlight-word">over</span> and welcome them. "You\'re going to love it here!" they say.', cn: '邻居们过来欢迎他们。"你会喜欢这里的！"他们说。' }
+                                ],
+                                quiz: [
+                                    { q: 'Where is the new apartment?', options: ['In the countryside', 'Between a school and a park', 'Next to a river'], answer: 1 },
+                                    { q: 'Who comes to welcome the family?', options: ['The police', 'The neighbours', 'The teacher'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'My Neighbourhood',
+                                text: 'I live on Green Street. There is a library across from my building. The bus stop is between the library and the cafe. I go past the flower shop every morning. My neighbourhood is quiet and clean. I love living here!',
+                                questions: [
+                                    { q: 'What is across from the building?', options: ['A cafe', 'A library', 'A flower shop'], answer: 1 },
+                                    { q: 'Where is the bus stop?', options: ['Between library and cafe', 'Next to the flower shop', 'Behind the building'], answer: 0 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '介绍你的新邻居',
+                                messages: [{ speaker: 'ai', text: 'Tell me about your neighbourhood.', cn: '给我介绍一下你的社区。' }],
+                                responses: [
+                                    { text: 'There is a park next to my home and a supermarket across from it. I love my neighbourhood!', cn: '我家旁边有个公园，对面有个超市。我爱我的社区！', correct: true, score: 10 },
+                                    { text: 'There is nothing near my home.', cn: '我家附近什么都没有。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The City Festival',
+                                pages: [
+                                    { emoji: '🎪', text: 'Today is the city <span class="highlight-word">festival</span>! There are stalls all <span class="highlight-word">over</span> the main square.', cn: '今天是城市节日！主广场上到处都是摊位。' },
+                                    { emoji: '🎵', text: 'A band plays <span class="highlight-word">on</span> a stage between two big trees.', cn: '一个乐队在两棵大树之间的舞台上表演。' },
+                                    { emoji: '🍔', text: 'Food stands are <span class="highlight-word">next to</span> the fountain. There is a game booth <span class="highlight-word">opposite</span> the entrance.', cn: '食品摊位在喷泉旁边。入口处对面有一个游戏摊位。' },
+                                    { emoji: '🎆', text: 'At night, fireworks light up the sky <span class="highlight-word">above</span> the square. "What a wonderful festival!" everyone says.', cn: '晚上，烟花照亮了广场上空的天空。"多棒的节日啊！"每个人都说。' }
+                                ],
+                                quiz: [
+                                    { q: 'Where does the band play?', options: ['In a cafe', 'On a stage between two trees', 'In a car'], answer: 1 },
+                                    { q: 'Where are the food stands?', options: ['Opposite the entrance', 'Next to the fountain', 'Behind the stage'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'The Best Place in Town',
+                                text: 'What is the best place in your town? In my town, the best place is the city square. The fountain is in the middle. Benches are around it. A big clock tower stands behind the square. I go there every weekend with my family!',
+                                questions: [
+                                    { q: 'What is in the middle of the square?', options: ['A clock tower', 'A fountain', 'A tree'], answer: 1 },
+                                    { q: 'Where is the clock tower?', options: ['In the middle', 'Behind the square', 'Next to the fountain'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '描述一个城市活动',
+                                messages: [{ speaker: 'ai', text: 'Have you been to a city festival?', cn: '你去过城市节日活动吗？' }],
+                                responses: [
+                                    { text: 'Yes! There were food stands next to the fountain and games opposite the entrance!', cn: '是的！喷泉旁边有食品摊位，入口对面有游戏！', correct: true, score: 10 },
+                                    { text: 'I have never been outside.', cn: '我从没出过门。', correct: false, score: 3 }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 5,
+                    title: 'Creative Minds',
+                    topic: '创意与艺术',
+                    vocab: [
+                        { en: 'imagination', cn: '想象力', emoji: '💭' },
+                        { en: 'create', cn: '创造', emoji: '🎨' },
+                        { en: 'paint', cn: '绘画', emoji: '🖌️' },
+                        { en: 'sculpture', cn: '雕塑', emoji: '🗿' },
+                        { en: 'music', cn: '音乐', emoji: '🎵' },
+                        { en: 'instrument', cn: '乐器', emoji: '🎸' },
+                        { en: 'gallery', cn: '画廊', emoji: '🖼️' },
+                        { en: 'exhibition', cn: '展览', emoji: '🎪' }
+                    ],
+                    grammar: {
+                        rule: 'Present Perfect (Basic) - 现在完成时基础',
+                        example: 'I <em>have painted</em> three pictures. / She <em>has played</em> the piano since she was five.',
+                        focus: 'have/has + 过去分词，表示经历',
+                        exercises: [
+                            { q: 'I ___ finished my painting.', options: ['has', 'have', 'had'], answer: 1 },
+                            { q: 'She ___ visited the gallery twice.', options: ['has', 'have', 'had'], answer: 0 },
+                            { q: 'We ___ made a sculpture.', options: ['has', 'have', 'had'], answer: 1 }
+                        ]
+                    },
+                    dailyDays: [
+                        {
+                            storybook: {
+                                title: 'The Art Show',
+                                pages: [
+                                    { emoji: '🎨', text: 'Sam loves art. He <span class="highlight-word">has painted</span> many pictures this month. Today is the school <span class="highlight-word">art show</span>!', cn: '山姆热爱艺术。这个月他已经画了很多画。今天是学校艺术展！' },
+                                    { emoji: '🖼️', text: 'Sam <span class="highlight-word">has put</span> his best painting in the <span class="highlight-word">gallery</span>. His friends have made a beautiful <span class="highlight-word">sculpture</span>.', cn: '山姆把他最好的画放在了画廊里。他的朋友们制作了一个漂亮的雕塑。' },
+                                    { emoji: '🎵', text: 'Lucy <span class="highlight-word">has played</span> the piano at the show. The music is <span class="highlight-word">wonderful</span>. Everyone claps!', cn: '露西在演出中弹了钢琴。音乐很美妙。每个人都鼓掌！' },
+                                    { emoji: '🎉', text: '"What a great <span class="highlight-word">exhibition</span>!" says the teacher. "You have all used your <span class="highlight-word">imagination</span>!"', cn: '"多棒的展览啊！"老师说。"你们都发挥了想象力！"' }
+                                ],
+                                quiz: [
+                                    { q: 'What has Sam put in the gallery?', options: ['A sculpture', 'A painting', 'A photo'], answer: 1 },
+                                    { q: 'What has Lucy done at the show?', options: ['Sung a song', 'Played the piano', 'Danced'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'My Creative Hobby',
+                                text: 'I have many hobbies, but painting is my favorite. I have painted over twenty pictures this year. My mum has hung three of them in our living room. I have also learned to play the guitar. Art makes me happy!',
+                                questions: [
+                                    { q: 'How many pictures has the writer painted?', options: ['Ten', 'Twenty', 'Thirty'], answer: 1 },
+                                    { q: 'What instrument has the writer learned?', options: ['Piano', 'Guitar', 'Violin'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '分享你的创意爱好',
+                                messages: [{ speaker: 'ai', text: 'What creative things have you done?', cn: '你做过什么有创意的事？' }],
+                                responses: [
+                                    { text: 'I have painted a picture of my family and made a clay sculpture.', cn: '我画了一幅我家人的画，还做了一个黏土雕塑。', correct: true, score: 10 },
+                                    { text: 'I ate breakfast.', cn: '我吃了早餐。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Music Class',
+                                pages: [
+                                    { emoji: '🎸', text: 'Today is music class. The teacher <span class="highlight-word">has brought</span> many <span class="highlight-word">instruments</span>.', cn: '今天是音乐课。老师带来了很多乐器。' },
+                                    { emoji: '🥁', text: 'Tom <span class="highlight-word">has tried</span> the drums. He <span class="highlight-word">has practiced</span> all week!', cn: '汤姆试了鼓。他已经练习了一整周！' },
+                                    { emoji: '🎺', text: 'Emma <span class="highlight-word">has chosen</span> the trumpet. She <span class="highlight-word">has never played</span> it before.', cn: '艾玛选择了小号。她以前从没吹过。' },
+                                    { emoji: '🎶', text: '"Everyone <span class="highlight-word">has improved</span> this term!" says the teacher. "You have all worked very hard!"', cn: '"这学期大家都有进步！"老师说。"你们都很努力！"' }
+                                ],
+                                quiz: [
+                                    { q: 'What has Tom tried?', options: ['The piano', 'The drums', 'The guitar'], answer: 1 },
+                                    { q: 'Has Emma played the trumpet before?', options: ['Yes', 'No', 'Maybe'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Learning an Instrument',
+                                text: 'I have played the piano since I was six. I have learned three songs this month. My sister has learned the violin. She has played it for two years. We have practiced together many times. Music is our favorite hobby!',
+                                questions: [
+                                    { q: 'How long has the writer played piano?', options: ['Since last year', 'Since age six', 'Since age ten'], answer: 1 },
+                                    { q: 'What instrument has the sister learned?', options: ['Piano', 'Guitar', 'Violin'], answer: 2 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论音乐',
+                                messages: [{ speaker: 'ai', text: 'Have you ever played a musical instrument?', cn: '你演奏过乐器吗？' }],
+                                responses: [
+                                    { text: 'Yes! I have played the piano for two years and I have learned three songs!', cn: '是的！我弹了两年钢琴，已经学会三首歌了！', correct: true, score: 10 },
+                                    { text: 'I have never heard music.', cn: '我从没听过音乐。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Clay Museum',
+                                pages: [
+                                    { emoji: '🏛️', text: 'The class <span class="highlight-word">has visited</span> a clay museum. They <span class="highlight-word">have seen</span> many amazing <span class="highlight-word">sculptures</span>.', cn: '全班参观了一个黏土博物馆。他们看到了很多令人惊叹的雕塑。' },
+                                    { emoji: '🐘', text: '"Someone <span class="highlight-word">has made</span> a clay elephant!" says Ben. "It looks so real!"', cn: '"有人做了一个黏土大象！"本说。"它看起来好真实！"' },
+                                    { emoji: '👐', text: 'The teacher says, "Now you <span class="highlight-word">have learned</span> enough. Try <span class="highlight-word">creating</span> your own!"', cn: '老师说："现在你们已经学到了足够多。试试创作自己的作品！"' },
+                                    { emoji: '🎨', text: 'The children <span class="highlight-word">have made</span> clay animals and flowers. "We have all used our <span class="highlight-word">imagination</span>!" they say.', cn: '孩子们做了黏土动物和花。"我们都发挥了想象力！"他们说。' }
+                                ],
+                                quiz: [
+                                    { q: 'What animal has someone made in clay?', options: ['A cat', 'An elephant', 'A bird'], answer: 1 },
+                                    { q: 'What do the children make?', options: ['Clay cars', 'Clay animals and flowers', 'Clay houses'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'A Famous Sculptor',
+                                text: 'Michelangelo was a great sculptor. He has created the famous statue of David. It has stood in Florence, Italy for over 500 years. People from all over the world have visited it. His work has inspired many artists!',
+                                questions: [
+                                    { q: 'What famous statue has Michelangelo created?', options: ['The Sphinx', 'David', 'Liberty'], answer: 1 },
+                                    { q: 'Where has it stood for over 500 years?', options: ['Rome', 'Florence, Italy', 'Paris'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '描述一次博物馆参观',
+                                messages: [{ speaker: 'ai', text: 'Have you visited a museum?', cn: '你去过博物馆吗？' }],
+                                responses: [
+                                    { text: 'Yes! I have visited the art museum. I have seen many beautiful paintings and sculptures!', cn: '是的！我去过艺术博物馆。我看过很多美丽的画和雕塑！', correct: true, score: 10 },
+                                    { text: 'I have been to the moon.', cn: '我去过月球。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The School Play',
+                                pages: [
+                                    { emoji: '🎭', text: 'Class 3 <span class="highlight-word">has decided</span> to put on a play. They <span class="highlight-word">have chosen</span> the story of Snow White.', cn: '三班决定演出一部戏剧。他们选择了白雪公主的故事。' },
+                                    { emoji: '👸', text: 'Lucy <span class="highlight-word">has been given</span> the role of Snow White. She <span class="highlight-word">has memorized</span> all her lines!', cn: '露西被分配了白雪公主的角色。她已经背熟了所有台词！' },
+                                    { emoji: '🎨', text: 'The art team <span class="highlight-word">has painted</span> the scenery. The music team <span class="highlight-word">has composed</span> a song.', cn: '美术组画了布景。音乐组创作了一首歌。' },
+                                    { emoji: '👏', text: 'On show day, everyone <span class="highlight-word">has worked</span> so hard. The audience <span class="highlight-word">has loved</span> the play!', cn: '演出当天，每个人都很努力。观众很喜欢这部剧！' }
+                                ],
+                                quiz: [
+                                    { q: 'What story has Class 3 chosen?', options: ['Cinderella', 'Snow White', 'The Little Mermaid'], answer: 1 },
+                                    { q: 'What has the art team done?', options: ['Written songs', 'Painted the scenery', 'Made costumes'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'The Art of Acting',
+                                text: 'Acting is a creative art. Good actors have studied their roles carefully. They have practiced their lines many times. They have learned to use their voices and bodies to tell stories. Acting takes a lot of imagination and hard work!',
+                                questions: [
+                                    { q: 'What have good actors done with their roles?', options: ['Ignored them', 'Studied them carefully', 'Changed them'], answer: 1 },
+                                    { q: 'What have they learned to use?', options: ['Their phones', 'Their voices and bodies', 'Their computers'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论学校活动',
+                                messages: [{ speaker: 'ai', text: 'Has your school ever put on a play?', cn: '你们学校演出过戏剧吗？' }],
+                                responses: [
+                                    { text: 'Yes! We have put on a play about animals. I have played the role of a lion!', cn: '是的！我们演过一部关于动物的剧。我演过狮子！', correct: true, score: 10 },
+                                    { text: 'I have never been to school.', cn: '我从没上过学。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Imaginary City',
+                                pages: [
+                                    { emoji: '🏙️', text: 'Max <span class="highlight-word">has imagined</span> a city in his mind. It <span class="highlight-word">has floating</span> buildings and flying cars!', cn: '马克斯在脑海中想象了一座城市。它有漂浮的建筑和会飞的汽车！' },
+                                    { emoji: '🌈', text: '"I <span class="highlight-word">have dreamed</span> of a rainbow bridge," he says. "It <span class="highlight-word">has connected</span> every neighbourhood."', cn: '"我梦见过一座彩虹桥，"他说。"它连接了每个街区。"' },
+                                    { emoji: '🎨', text: 'Max <span class="highlight-word">has drawn</span> his imaginary city. His teacher <span class="highlight-word">has hung</span> the picture on the wall.', cn: '马克斯画出了他想象中的城市。老师把画挂在了墙上。' },
+                                    { emoji: '⭐', text: '"You <span class="highlight-word">have created</span> something amazing!" says the teacher. "Your <span class="highlight-word">imagination</span> is a gift!"', cn: '"你创造了了不起的东西！"老师说。"你的想象力是一种天赋！"' }
+                                ],
+                                quiz: [
+                                    { q: 'What has Max imagined?', options: ['A farm', 'A city with floating buildings', 'A school'], answer: 1 },
+                                    { q: 'What has the teacher done with Max\'s picture?', options: ['Thrown it away', 'Hung it on the wall', 'Given it back'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Drawing Your Dreams',
+                                text: 'Have you ever drawn your dreams? I have drawn many dream pictures. I have created flying houses, talking trees, and rainbow rivers. My art teacher has said that imagination is the most important tool for an artist. Keep drawing!',
+                                questions: [
+                                    { q: 'What has the writer drawn?', options: ['Only real things', 'Dream pictures', 'Maps'], answer: 1 },
+                                    { q: 'What is the most important tool for an artist?', options: ['A pencil', 'Imagination', 'A computer'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '描述你的想象',
+                                messages: [{ speaker: 'ai', text: 'If you could create anything, what would it be?', cn: '如果你能创造任何东西，你会创造什么？' }],
+                                responses: [
+                                    { text: 'I have imagined a city with flying cars and rainbow bridges!', cn: '我想象过一座有飞行汽车和彩虹桥的城市！', correct: true, score: 10 },
+                                    { text: 'I have created nothing.', cn: '我什么都没创造过。', correct: false, score: 3 }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 6,
+                    title: 'Future Heroes',
+                    topic: '未来英雄',
+                    vocab: [
+                        { en: 'courage', cn: '勇气', emoji: '💪' },
+                        { en: 'mission', cn: '使命', emoji: '🎯' },
+                        { en: 'rescue', cn: '救援', emoji: '🚑' },
+                        { en: 'protect', cn: '保护', emoji: '🛡️' },
+                        { en: 'invent', cn: '发明', emoji: '💡' },
+                        { en: 'discover', cn: '发现', emoji: '🔍' },
+                        { en: 'inspire', cn: '激励', emoji: '⭐' },
+                        { en: 'achieve', cn: '成就', emoji: '🏆' }
+                    ],
+                    grammar: {
+                        rule: 'Going to - 未来计划',
+                        example: 'I <em>am going to be</em> a hero. / We <em>are going to save</em> the world.',
+                        focus: 'be going to 表示计划和打算',
+                        exercises: [
+                            { q: 'I ___ going to invent a new machine.', options: ['is', 'am', 'are'], answer: 1 },
+                            { q: 'They ___ going to help people.', options: ['is', 'am', 'are'], answer: 2 },
+                            { q: 'She ___ going to rescue animals.', options: ['is', 'am', 'are'], answer: 0 }
+                        ]
+                    },
+                    dailyDays: [
+                        {
+                            storybook: {
+                                title: 'The Young Inventor',
+                                pages: [
+                                    { emoji: '💡', text: 'Maya is a young <span class="highlight-word">inventor</span>. She is going to build a <span class="highlight-word">robot</span> to help people.', cn: '玛雅是个年轻的发明家。她打算建造一个机器人来帮助人们。' },
+                                    { emoji: '🔧', text: 'She <span class="highlight-word">is going to</span> use old parts. Her brother <span class="highlight-word">is going to</span> help her with the <span class="highlight-word">wires</span>.', cn: '她打算用旧零件。她的哥哥打算帮她接线。' },
+                                    { emoji: '🤖', text: 'The robot <span class="highlight-word">is going to</span> clean the streets and <span class="highlight-word">rescue</span> lost animals. What a great <span class="highlight-word">mission</span>!', cn: '机器人打算去清理街道，救援迷路的动物。多伟大的使命！' },
+                                    { emoji: '🌟', text: '"You are going to <span class="highlight-word">inspire</span> others," says her teacher. "You will <span class="highlight-word">achieve</span> great things!"', cn: '"你会激励别人的，"老师说。"你会取得伟大成就的！"' }
+                                ],
+                                quiz: [
+                                    { q: 'What is Maya going to build?', options: ['A car', 'A robot', 'A plane'], answer: 1 },
+                                    { q: 'Who is going to help Maya?', options: ['Her sister', 'Her brother', 'Her teacher'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Heroes of Tomorrow',
+                                text: 'Heroes are not just in stories. Many people are going to do great things. Scientists are going to discover new medicines. Engineers are going to build better cities. I am going to study hard and help the world!',
+                                questions: [
+                                    { q: 'What are scientists going to discover?', options: ['New planets', 'New medicines', 'New animals'], answer: 1 },
+                                    { q: 'What is the writer going to do?', options: ['Travel the world', 'Study hard and help', 'Become rich'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '谈论你的未来计划',
+                                messages: [{ speaker: 'ai', text: 'What are you going to do when you grow up?', cn: '你长大后打算做什么？' }],
+                                responses: [
+                                    { text: 'I am going to be a scientist and invent things to help people.', cn: '我打算成为一名科学家，发明东西来帮助人们。', correct: true, score: 10 },
+                                    { text: 'I am going to sleep all day.', cn: '我打算整天睡觉。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Firefighter\'s Dream',
+                                pages: [
+                                    { emoji: '🚒', text: 'Jake <span class="highlight-word">wants to be</span> a firefighter. "I am going to <span class="highlight-word">save</span> people," he says.', cn: '杰克想成为一名消防员。"我要去救人，"他说。' },
+                                    { emoji: '🧯', text: 'He <span class="highlight-word">is going to learn</span> how to use a hose. He <span class="highlight-word">is going to practice</span> every day.', cn: '他打算学习如何使用水管。他打算每天练习。' },
+                                    { emoji: '💪', text: '"Firefighters need <span class="highlight-word">courage</span>," says Dad. "But they also need to be <span class="highlight-word">smart</span>."', cn: '"消防员需要勇气，"爸爸说。"但他们也需要聪明。"' },
+                                    { emoji: '⭐', text: '"I am going to be <span class="highlight-word">brave</span> and <span class="highlight-word">strong</span>," says Jake. "I am going to protect everyone!"', cn: '"我会勇敢坚强，"杰克说。"我会保护每个人！"' }
+                                ],
+                                quiz: [
+                                    { q: 'What does Jake want to be?', options: ['A doctor', 'A firefighter', 'A teacher'], answer: 1 },
+                                    { q: 'What do firefighters need besides courage?', options: ['Money', 'To be smart', 'A car'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Real Heroes',
+                                text: 'Firefighters are going to answer every emergency call. Doctors are going to treat every patient. Teachers are going to educate every student. These people are going to make the world better. They are the real heroes!',
+                                questions: [
+                                    { q: 'Who is going to treat patients?', options: ['Firefighters', 'Doctors', 'Teachers'], answer: 1 },
+                                    { q: 'What are teachers going to do?', options: ['Save people', 'Educate students', 'Build houses'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '讨论英雄',
+                                messages: [{ speaker: 'ai', text: 'Who is your hero?', cn: '谁是你的英雄？' }],
+                                responses: [
+                                    { text: 'My hero is my dad. He is going to teach me to be brave and helpful!', cn: '我的英雄是我爸爸。他打算教我勇敢和乐于助人！', correct: true, score: 10 },
+                                    { text: 'I don\'t have any heroes.', cn: '我没有英雄。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Space Explorer',
+                                pages: [
+                                    { emoji: '🚀', text: 'Zara <span class="highlight-word">is going to travel</span> to space. She <span class="highlight-word">is going to be</span> an astronaut!', cn: '扎拉打算去太空旅行。她打算成为一名宇航员！' },
+                                    { emoji: '🌍', text: '"I am going to <span class="highlight-word">discover</span> new planets," she says. "I am going to find new worlds."', cn: '"我打算发现新的行星，"她说。"我打算找到新的世界。"' },
+                                    { emoji: '📚', text: 'She <span class="highlight-word">is going to study</span> hard at school. She <span class="highlight-word">is going to learn</span> science and math.', cn: '她打算在学校努力学习。她打算学习科学和数学。' },
+                                    { emoji: '🌟', text: '"One day, I am going to <span class="highlight-word">inspire</span> other children to explore space," Zara says.', cn: '"总有一天，我要激励其他孩子探索太空，"扎拉说。' }
+                                ],
+                                quiz: [
+                                    { q: 'What is Zara going to be?', options: ['A teacher', 'An astronaut', 'A doctor'], answer: 1 },
+                                    { q: 'What is she going to study?', options: ['Art only', 'Science and math', 'Cooking'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Going to Mars',
+                                text: 'Scientists are going to send humans to Mars. The journey is going to take about seven months. Astronauts are going to study the red planet. They are going to look for signs of water. It is going to be an amazing adventure!',
+                                questions: [
+                                    { q: 'How long is the journey to Mars going to take?', options: ['One month', 'Seven months', 'One year'], answer: 1 },
+                                    { q: 'What are astronauts going to look for on Mars?', options: ['Gold', 'Signs of water', 'Trees'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '太空梦想',
+                                messages: [{ speaker: 'ai', text: 'Would you like to go to space?', cn: '你想去太空吗？' }],
+                                responses: [
+                                    { text: 'Yes! I am going to visit Mars and discover new things about the universe!', cn: '是的！我要去火星，发现关于宇宙的新东西！', correct: true, score: 10 },
+                                    { text: 'No, I am going to stay in bed forever.', cn: '不，我打算永远待在床上。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Animal Rescuer',
+                                pages: [
+                                    { emoji: '🐾', text: 'Amy loves animals. She <span class="highlight-word">is going to start</span> an animal <span class="highlight-word">rescue</span> center.', cn: '艾米热爱动物。她打算创办一个动物救援中心。' },
+                                    { emoji: '🏥', text: '"I am going to <span class="highlight-word">build</span> a big house for lost animals," she says.', cn: '"我打算为迷路的动物建一个大房子，"她说。' },
+                                    { emoji: '💊', text: 'She <span class="highlight-word">is going to learn</span> how to take care of sick animals. "I am going to <span class="highlight-word">protect</span> them all."', cn: '她打算学习如何照顾生病的动物。"我要保护它们所有人。"' },
+                                    { emoji: '❤️', text: '"Every animal is going to be safe here," Amy says. "They are going to be happy and healthy."', cn: '"每只动物在这里都会安全，"艾米说。"它们会快乐健康。"' }
+                                ],
+                                quiz: [
+                                    { q: 'What is Amy going to start?', options: ['A restaurant', 'An animal rescue center', 'A school'], answer: 1 },
+                                    { q: 'What is she going to learn?', options: ['To cook', 'To take care of sick animals', 'To dance'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Protecting Endangered Animals',
+                                text: 'Many animals are going to become extinct if we don\'t help. We are going to need to protect their habitats. Scientists are going to study endangered species. Children are going to learn about animal conservation. We are all going to make a difference!',
+                                questions: [
+                                    { q: 'What are scientists going to study?', options: ['Space', 'Endangered species', 'Cars'], answer: 1 },
+                                    { q: 'What are children going to learn about?', options: ['Animal conservation', 'Video games', 'Cooking'], answer: 0 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '保护动物计划',
+                                messages: [{ speaker: 'ai', text: 'How are you going to help animals?', cn: '你打算如何帮助动物？' }],
+                                responses: [
+                                    { text: 'I am going to build shelters for lost animals and learn how to protect them.', cn: '我打算为迷路的动物建庇护所，学习如何保护它们。', correct: true, score: 10 },
+                                    { text: 'I am going to ignore them.', cn: '我打算不理它们。', correct: false, score: 3 }
+                                ]
+                            }
+                        },
+                        {
+                            storybook: {
+                                title: 'The Green Hero',
+                                pages: [
+                                    { emoji: '🌱', text: 'Ben <span class="highlight-word">is going to save</span> the Earth. "I am going to plant trees," he says.', cn: '本打算拯救地球。"我要种树，"他说。' },
+                                    { emoji: '♻️', text: '"I am going to <span class="highlight-word">recycle</span> everything," Ben tells his class. "Plastic, paper, and glass."', cn: '"我打算回收所有东西，"本告诉全班。"塑料、纸和玻璃。"' },
+                                    { emoji: '🌍', text: '"We are going to <span class="highlight-word">reduce</span> waste and <span class="highlight-word">reuse</span> things. We are going to make the Earth <span class="highlight-word">cleaner</span>."', cn: '"我们要减少浪费，重复使用物品。我们要让地球更干净。"' },
+                                    { emoji: '🌈', text: 'The whole school <span class="highlight-word">is going to join</span> Ben\'s mission. "Together we are going to <span class="highlight-word">achieve</span> great things!"', cn: '整个学校都打算加入本的使命。" together我们要取得伟大成就！"' }
+                                ],
+                                quiz: [
+                                    { q: 'What is Ben going to plant?', options: ['Flowers', 'Trees', 'Vegetables'], answer: 1 },
+                                    { q: 'Who is going to join Ben\'s mission?', options: ['Nobody', 'The whole school', 'Only his family'], answer: 1 }
+                                ]
+                            },
+                            reading: {
+                                title: 'Going Green',
+                                text: 'We are going to face many environmental problems. But we are going to solve them together. We are going to use clean energy. We are going to reduce pollution. Every small action is going to help. We are all going to be green heroes!',
+                                questions: [
+                                    { q: 'What are we going to use?', options: ['Dirty energy', 'Clean energy', 'No energy'], answer: 1 },
+                                    { q: 'What is going to help?', options: ['Nothing', 'Every small action', 'Only big actions'], answer: 1 }
+                                ]
+                            },
+                            speaking: {
+                                scenario: '环保行动',
+                                messages: [{ speaker: 'ai', text: 'What are you going to do to help the Earth?', cn: '你打算如何帮助地球？' }],
+                                responses: [
+                                    { text: 'I am going to recycle, plant trees, and reduce waste!', cn: '我打算回收垃圾、种树、减少浪费！', correct: true, score: 10 },
+                                    { text: 'I am going to litter more.', cn: '我打算扔更多垃圾。', correct: false, score: 3 }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // 应用状态
+        let currentUnit = 1;
+        let currentMode = '';
+        let currentQuestion = 0;
+        let score = 0;
+        let correctCount = 0;
+        let totalQuestions = 0;
+        let startTime = null;
+        
+        // 绘本阅读状态
+        let storybookState = {
+            currentPage: 0,
+            totalPages: 0,
+            showTranslation: false
+        };
+
+        // 初始化
+        function init() {
+            loadStats();
+            renderCalendar();
+            renderUnitTabs();
+            updateTodayPlan();
+            updateStats();
+        }
+
+        function loadStats() {
+            const stats = localStorage.getItem('powerUp2Stats');
+            if (stats) {
+                const data = JSON.parse(stats);
+                document.getElementById('streakDays').textContent = data.streak || 0;
+                document.getElementById('totalTasks').textContent = data.totalTasks || 0;
+                if (data.currentUnit) {
+                    currentUnit = data.currentUnit;
+                }
+            }
+        }
+
+        function saveStats() {
+            const stats = {
+                streak: parseInt(document.getElementById('streakDays').textContent),
+                totalTasks: parseInt(document.getElementById('totalTasks').textContent),
+                currentUnit: currentUnit,
+                lastCheckin: new Date().toDateString()
+            };
+            localStorage.setItem('powerUp2Stats', JSON.stringify(stats));
+        }
+
+        function updateStats() {
+            const today = new Date().toDateString();
+            const checkins = JSON.parse(localStorage.getItem('powerUp2Checkins') || '[]');
+            if (!checkins.includes(today)) {
+                checkins.push(today);
+                localStorage.setItem('powerUp2Checkins', JSON.stringify(checkins));
+            }
+
+            let streak = 0;
+            const today_date = new Date();
+            for (let i = 0; i < 365; i++) {
+                const checkDate = new Date(today_date);
+                checkDate.setDate(checkDate.getDate() - i);
+                if (checkins.includes(checkDate.toDateString())) {
+                    streak++;
+                } else if (i > 0) {
+                    break;
+                }
+            }
+            document.getElementById('streakDays').textContent = streak;
+        }
+
+        function renderUnitTabs() {
+            const tabs = document.getElementById('unitTabs');
+            tabs.innerHTML = powerUp1Data.units.map(u => `
+                <div class="unit-tab ${u.id === currentUnit ? 'active' : ''}" onclick="selectUnit(${u.id})">
+                    Unit ${u.id}
+                </div>
+            `).join('');
+        }
+
+        function selectUnit(unitId) {
+            currentUnit = unitId;
+            renderUnitTabs();
+            updateTodayPlan();
+            saveStats();
+        }
+
+        // 获取当前单元今日的内容（每日轮换）
+        function getUnit() {
+            const unit = powerUp1Data.units.find(u => u.id === currentUnit);
+            const dayIndex = getDayIndexForUnit(currentUnit);
+            const dayData = unit.dailyDays[dayIndex];
+            
+            // 合并固定 grammar 和今日轮换内容
+            return {
+                ...unit,
+                storybook: dayData.storybook,
+                reading: dayData.reading,
+                speaking: dayData.speaking,
+                _dayIndex: dayIndex,
+                _totalDays: unit.dailyDays.length
+            };
+        }
+
+        // 计算单元今天是第几天（0-based, 5天循环）
+        function getDayIndexForUnit(unitId) {
+            const storageKey = `powerUp2_unitStart_${unitId}`;
+            let startDate = localStorage.getItem(storageKey);
+            
+            if (!startDate) {
+                // 首次学习该单元，记录今天为起始日
+                startDate = new Date().toDateString();
+                localStorage.setItem(storageKey, startDate);
+                return 0;
+            }
+            
+            const start = new Date(startDate);
+            const now = new Date();
+            const diffTime = now - start;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            // 5天循环
+            return diffDays % 5;
+        }
+
+        function updateTodayPlan() {
+            const unit = getUnit();
+            const dayLabel = unit._totalDays > 1 ? ` 第${unit._dayIndex + 1}天/共${unit._totalDays}天` : '';
+            document.getElementById('planTitle').textContent = `Unit ${unit.id}: ${unit.title}${dayLabel}`;
+            document.getElementById('planSubtitle').textContent = `${unit.topic} - 每日学习计划`;
+
+            const tasks = [
+                { icon: '📖', name: '绘本阅读', desc: unit.storybook.title, type: 'storybook', completed: false },
+                { icon: '📝', name: '语法练习', desc: unit.grammar.rule, type: 'grammar', completed: false },
+                { icon: '📚', name: '阅读理解', desc: unit.reading.title, type: 'reading', completed: false },
+                { icon: '🎤', name: '口语表达', desc: unit.speaking.scenario, type: 'speaking', completed: false }
+            ];
+
+            document.getElementById('planTasks').innerHTML = tasks.map(task => `
+                <div class="plan-task" onclick="startMode('${task.type}')">
+                    <div class="task-icon">${task.icon}</div>
+                    <div class="task-info">
+                        <div class="task-name">${task.name}</div>
+                        <div class="task-desc">${task.desc}</div>
+                    </div>
+                    <div class="task-badge ${task.type}">${task.completed ? '✓' : '开始'}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            const checkins = JSON.parse(localStorage.getItem('powerUp2Checkins') || '[]');
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+
+            let html = '';
+            ['日', '一', '二', '三', '四', '五', '六'].forEach(day => {
+                html += `<div style="font-size: 12px; color: #999; text-align: center;">${day}</div>`;
+            });
+
+            for (let i = 0; i < firstDay; i++) {
+                html += `<div style="visibility: hidden;"></div>`;
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = new Date(year, month, day).toDateString();
+                const isChecked = checkins.includes(dateStr);
+                html += `
+                    <div class="calendar-day ${isChecked ? 'checked' : ''}" ${isChecked ? `onclick="showCheckinDetail('${dateStr}')"` : ''} style="${isChecked ? 'cursor: pointer;' : ''}">
+                        <div class="day-number">${day}</div>
+                        ${isChecked ? '<div class="day-status">✓</div>' : ''}
+                    </div>
+                `;
+            }
+            calendar.innerHTML = html;
+        }
+
+        function startMode(mode) {
+            currentMode = mode;
+            currentQuestion = 0;
+            score = 0;
+            correctCount = 0;
+            startTime = Date.now();
+
+            document.getElementById('homePage').classList.add('hidden-page');
+            document.getElementById('practicePage').classList.remove('hidden-page');
+            document.querySelector('.bottom-nav').classList.add('hidden-page');
+
+            document.querySelectorAll('.mode-content').forEach(el => el.classList.add('hidden-page'));
+
+            switch (mode) {
+                case 'storybook':
+                    document.getElementById('storybookMode').classList.remove('hidden-page');
+                    initStorybookMode();
+                    break;
+                case 'grammar':
+                    document.getElementById('grammarMode').classList.remove('hidden-page');
+                    initGrammarMode();
+                    break;
+                case 'reading':
+                    document.getElementById('readingMode').classList.remove('hidden-page');
+                    initReadingMode();
+                    break;
+                case 'speaking':
+                    document.getElementById('speakingMode').classList.remove('hidden-page');
+                    initSpeakingMode();
+                    break;
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // 绘本阅读模式
+        function initStorybookMode() {
+            const unit = getUnit();
+            const storybook = unit.storybook;
+            
+            storybookState = {
+                currentPage: 0,
+                totalPages: storybook.pages.length,
+                showTranslation: false
+            };
+            
+            renderStorybookPage();
+            document.getElementById('storybookQuiz').innerHTML = '';
+        }
+
+        function renderStorybookPage() {
+            const unit = getUnit();
+            const storybook = unit.storybook;
+            const page = storybook.pages[storybookState.currentPage];
+            
+            document.getElementById('sceneEmoji').textContent = page.emoji;
+            document.getElementById('storybookText').innerHTML = page.text;
+            
+            const translationEl = document.getElementById('storybookTranslation');
+            translationEl.textContent = page.cn;
+            translationEl.style.display = storybookState.showTranslation ? 'block' : 'none';
+            
+            // 更新页码指示
+            document.getElementById('pageIndicator').textContent = `${storybookState.currentPage + 1} / ${storybookState.totalPages}`;
+            
+            // 更新页码点
+            let dotsHtml = '';
+            for (let i = 0; i < storybookState.totalPages; i++) {
+                let dotClass = 'page-dot';
+                if (i === storybookState.currentPage) dotClass += ' active';
+                else if (i < storybookState.currentPage) dotClass += ' completed';
+                dotsHtml += `<div class="${dotClass}"></div>`;
+            }
+            document.getElementById('pageDots').innerHTML = dotsHtml;
+            
+            // 更新按钮状态
+            document.getElementById('prevBtn').disabled = storybookState.currentPage === 0;
+            
+            if (storybookState.currentPage === storybookState.totalPages - 1) {
+                document.getElementById('nextBtn').textContent = '✅ 完成阅读';
+            } else {
+                document.getElementById('nextBtn').textContent = '下一页 ➡️';
+            }
+        }
+
+        function nextPage() {
+            const unit = getUnit();
+            const storybook = unit.storybook;
+            
+            if (storybookState.currentPage < storybookState.totalPages - 1) {
+                storybookState.currentPage++;
+                renderStorybookPage();
+            } else {
+                // 完成阅读，显示理解测验
+                showStorybookQuiz();
+            }
+        }
+
+        function prevPage() {
+            if (storybookState.currentPage > 0) {
+                storybookState.currentPage--;
+                renderStorybookPage();
+            }
+        }
+
+        function readAloud() {
+            const unit = getUnit();
+            const storybook = unit.storybook;
+            const page = storybook.pages[storybookState.currentPage];
+            
+            // 提取纯文本（去除 HTML 标签）
+            const plainText = page.text.replace(/<[^>]*>/g, '');
+            speak(plainText);
+        }
+
+        function showTranslation() {
+            storybookState.showTranslation = !storybookState.showTranslation;
+            const translationEl = document.getElementById('storybookTranslation');
+            translationEl.style.display = storybookState.showTranslation ? 'block' : 'none';
+        }
+
+        function showStorybookQuiz() {
+            const unit = getUnit();
+            const quiz = unit.storybook.quiz;
+            totalQuestions = quiz.length;
+            currentQuestion = 0;
+            score = 0;
+            correctCount = 0;
+
+            let html = '<h3 style="margin: 20px 0 15px;">📝 理解测验</h3>';
+            quiz.forEach((q, i) => {
+                html += `
+                    <div class="question-area" id="quizQ${i}">
+                        <div class="question-text">${i + 1}. ${q.q}</div>
+                        <div class="options-list">
+                            ${q.options.map((opt, j) => `
+                                <button class="option-btn" onclick="checkQuizAnswer(${i}, ${j}, ${q.answer})">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('storybookQuiz').innerHTML = html;
+        }
+
+        function checkQuizAnswer(qIndex, selected, correct) {
+            const qDiv = document.getElementById(`quizQ${qIndex}`);
+            const btns = qDiv.querySelectorAll('.option-btn');
+            btns.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btns[selected].classList.add('correct');
+                score += 10;
+                correctCount++;
+                showToast('✅ 正确！');
+            } else {
+                btns[selected].classList.add('wrong');
+                btns[correct].classList.add('correct');
+                showToast('❌ 正确答案已标出');
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                updateProgress();
+                if (currentQuestion >= totalQuestions) {
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        // 语法练习模式
+        function initGrammarMode() {
+            const unit = getUnit();
+            const grammar = unit.grammar;
+            document.getElementById('grammarRule').innerHTML = `📌 ${grammar.rule}`;
+            document.getElementById('grammarExample').innerHTML = grammar.example;
+
+            const exercises = grammar.exercises;
+            totalQuestions = exercises.length;
+            currentQuestion = 0;
+
+            let html = '';
+            exercises.forEach((ex, i) => {
+                html += `
+                    <div class="question-area" id="grammarQ${i}">
+                        <div class="question-text">${ex.q}</div>
+                        <div class="options-list">
+                            ${ex.options.map((opt, j) => `
+                                <button class="option-btn" onclick="checkGrammarAnswer(${i}, ${j}, ${ex.answer})">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('grammarQuestions').innerHTML = html;
+        }
+
+        function checkGrammarAnswer(qIndex, selected, correct) {
+            const qDiv = document.getElementById(`grammarQ${qIndex}`);
+            const btns = qDiv.querySelectorAll('.option-btn');
+            btns.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btns[selected].classList.add('correct');
+                score += 10;
+                correctCount++;
+            } else {
+                btns[selected].classList.add('wrong');
+                btns[correct].classList.add('correct');
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                updateProgress();
+                if (currentQuestion >= totalQuestions) {
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        // 阅读理解模式
+        function initReadingMode() {
+            const unit = getUnit();
+            const reading = unit.reading;
+            totalQuestions = reading.questions.length;
+            currentQuestion = 0;
+
+            document.getElementById('readingText').innerHTML = `
+                <h3 style="margin-bottom: 15px;">📖 ${reading.title}</h3>
+                ${reading.text}
+            `;
+
+            let html = '';
+            reading.questions.forEach((q, i) => {
+                html += `
+                    <div class="question-area" id="readingQ${i}">
+                        <div class="question-text">${i + 1}. ${q.q}</div>
+                        <div class="options-list">
+                            ${q.options.map((opt, j) => `
+                                <button class="option-btn" onclick="checkReadingAnswer(${i}, ${j}, ${q.answer})">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('readingQuestions').innerHTML = html;
+        }
+
+        function checkReadingAnswer(qIndex, selected, correct) {
+            const qDiv = document.getElementById(`readingQ${qIndex}`);
+            const btns = qDiv.querySelectorAll('.option-btn');
+            btns.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btns[selected].classList.add('correct');
+                score += 10;
+                correctCount++;
+            } else {
+                btns[selected].classList.add('wrong');
+                btns[correct].classList.add('correct');
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                updateProgress();
+                if (currentQuestion >= totalQuestions) {
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        // 口语表达模式
+        function initSpeakingMode() {
+            const unit = getUnit();
+            const speaking = unit.speaking;
+
+            document.getElementById('chatContainer').innerHTML = '';
+            document.getElementById('speakingOptions').innerHTML = '';
+
+            // 显示 AI 消息
+            addChatMessage('ai', speaking.messages[0].text, speaking.messages[0].cn);
+
+            // 显示选项
+            const optionsHtml = speaking.responses.map((r, i) => `
+                <button class="option-btn" onclick="selectSpeakingResponse(${i})">
+                    ${r.text}
+                    <div style="font-size: 12px; color: #999; margin-top: 5px;">${r.cn}</div>
+                </button>
+            `).join('');
+            document.getElementById('speakingOptions').innerHTML = optionsHtml;
+        }
+
+        function addChatMessage(speaker, text, translation) {
+            const container = document.getElementById('chatContainer');
+            const isUser = speaker === 'user';
+            container.innerHTML += `
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; ${isUser ? 'flex-direction: row-reverse;' : ''}">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: ${isUser ? '#52c41a' : '#667eea'}; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">${isUser ? '😊' : '🤖'}</div>
+                    <div style="background: ${isUser ? '#667eea' : 'white'}; padding: 12px 16px; border-radius: 18px; max-width: 70%; color: ${isUser ? 'white' : '#333'};">
+                        <div>${text}</div>
+                        <div style="font-size: 12px; color: ${isUser ? 'rgba(255,255,255,0.7)' : '#999'}; margin-top: 5px;">${translation}</div>
+                    </div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function selectSpeakingResponse(idx) {
+            const unit = getUnit();
+            const response = unit.speaking.responses[idx];
+
+            addChatMessage('user', response.text, response.cn);
+            score = response.score || 10;
+            correctCount = response.score > 5 ? 1 : 0;
+            totalQuestions = 1;
+            currentQuestion = 1;
+
+            setTimeout(() => showResult(), 1000);
+        }
+
+        // 结果展示
+        function showResult() {
+            document.querySelectorAll('.mode-content').forEach(el => el.classList.add('hidden-page'));
+            document.getElementById('resultMode').classList.remove('hidden-page');
+
+            const timeUsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(timeUsed / 60);
+            const seconds = timeUsed % 60;
+
+            let stars = '⭐';
+            if (score >= 20) stars = '⭐⭐⭐';
+            else if (score >= 10) stars = '⭐⭐';
+
+            document.getElementById('resultStars').textContent = stars;
+            document.getElementById('resultScore').textContent = score + ' 分';
+            document.getElementById('resultDetail').innerHTML = `
+                完成 ${correctCount}/${totalQuestions} 题<br>
+                用时 ${minutes}分${seconds}秒
+            `;
+
+            document.getElementById('todayScore').textContent = score;
+
+            // 保存记录
+            savePracticeRecord();
+            updateStats();
+            renderCalendar();
+
+            const currentTotal = parseInt(document.getElementById('totalTasks').textContent);
+            document.getElementById('totalTasks').textContent = currentTotal + 1;
+            saveStats();
+        }
+
+        function savePracticeRecord() {
+            const today = new Date().toDateString();
+            const records = JSON.parse(localStorage.getItem('powerUp2Records') || '{}');
+
+            if (!records[today]) records[today] = [];
+
+            records[today].push({
+                mode: currentMode,
+                score: score,
+                correctCount: correctCount,
+                totalQuestions: totalQuestions,
+                timestamp: Date.now()
+            });
+
+            localStorage.setItem('powerUp2Records', JSON.stringify(records));
+        }
+
+        function backToHome() {
+            document.getElementById('practicePage').classList.add('hidden-page');
+            document.getElementById('homePage').classList.remove('hidden-page');
+            document.querySelector('.bottom-nav').classList.remove('hidden-page');
+        }
+
+        function switchPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden-page'));
+            document.getElementById(page + 'Page').classList.remove('hidden-page');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function showCheckinDetail(dateStr) {
+            const records = JSON.parse(localStorage.getItem('powerUp2Records') || '{}');
+            const dayRecord = records[dateStr];
+            const dateObj = new Date(dateStr);
+
+            document.getElementById('detailDate').innerHTML = `
+                <div>${dateObj.getMonth() + 1}月${dateObj.getDate()}日</div>
+                <div style="font-size: 32px; font-weight: bold; margin-top: 5px;">
+                    ${dayRecord ? dayRecord.reduce((s, r) => s + r.score, 0) : 0} 分
+                </div>
+            `;
+
+            if (!dayRecord) {
+                document.getElementById('practiceList').innerHTML = '<div style="text-align: center; padding: 30px; color: #999;">暂无记录</div>';
+            } else {
+                const modeNames = { storybook: '绘本阅读', grammar: '语法练习', reading: '阅读理解', speaking: '口语表达' };
+                const modeIcons = { storybook: '📖', grammar: '📝', reading: '📚', speaking: '🎤' };
+
+                document.getElementById('practiceList').innerHTML = dayRecord.map(r => `
+                    <div class="practice-item">
+                        <div class="practice-icon">${modeIcons[r.mode]}</div>
+                        <div class="practice-info">
+                            <div class="practice-name">${modeNames[r.mode]}</div>
+                            <div class="practice-detail">完成 ${r.correctCount}/${r.totalQuestions} 题</div>
+                        </div>
+                        <div class="practice-score">+${r.score}分</div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('checkinDetailModal').classList.remove('hidden-page');
+        }
+
+        function closeCheckinDetail() {
+            document.getElementById('checkinDetailModal').classList.add('hidden-page');
+        }
+
+        document.getElementById('checkinDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeCheckinDetail();
+        });
+
+        init();
+    </script>
+</body>
+</html>
